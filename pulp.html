@@ -1,0 +1,84 @@
+<head>
+  <title>Pulp</title>
+</head>
+
+<body ng-app="pulp" >
+
+
+		{{#if currentUser}}
+		  	<h1>navbar</h1>
+		{{else}}
+			<h1>Welcome to Pulp</h1>	
+		{{/if}}
+
+</body>
+
+<template name="main">
+	{{#if currentUser}}
+
+	{{> loginButtons}}
+
+	<h1>Start something new...</h1>
+		<form class="new-story">
+		  	<input type="text" name="title" placeholder="The title of your story">
+		  	<input type="text" name="text" placeholder="Type your story here">
+		  	<input type="submit" value="Submit">
+		</form>
+	<h1> Or read an existing story</h1>
+		<a href="/library">Library</a>
+	{{else}}
+		<h1>Sign up or log in</h1>
+		{{> loginButtons}}
+	{{/if}}
+</template>
+
+
+
+<template name="library">
+
+	<h1> Library</h1>
+	<div ng-include="'library.ng.html'" ng-controller="LibraryCtrl"> </div>
+
+</template>
+
+<template name="story">
+
+	<h1>You are now reading a story </h1>
+	<h2>{{title}}</h2>
+
+	current story: {{currentStoryID}}<br />
+	active panel: {{activePanel}}
+
+	<div id="workspace">		
+	</div>
+	
+</template>
+
+<template  name= "panel">
+	<div class="panel" id={{_id}}>
+		{{#if activePanel id }}
+			<span style="color:red;">THIS IS THE ACTIVE PANEL</span> <br />
+		{{/if}}
+
+		{{#with getPanel id}}
+			parent panel : {{parentPanel}} <br />
+			parent story : {{parentStory}} <br />
+			this panels id: {{_id}}  <br />
+			created by: {{createdBy}} <br />
+			story content: {{text}} <br />
+			children: {{children}}
+
+			<!-- if this out unless active panel -->
+		<form class="new-panel">
+			  	<input type="text" name="text" placeholder="Type your story here" >
+			  	<input type="hidden" name="parent" value="{{_id}}">
+			  	<input type="submit" value="Submit">
+		  	</form>
+		{{else}}
+			there is no panel
+		{{/with}}
+
+		
+	</div>
+	
+</template>
