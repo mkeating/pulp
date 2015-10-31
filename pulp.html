@@ -34,11 +34,6 @@
 					{{> yield "story"}}
 				</div>
 
-				<div class="datatest">
-					
-					{{> yield "datatest"}}
-				</div>
-
 				<div class="library">
 					{{> yield "library"}}
 				</div>
@@ -128,18 +123,6 @@
 	
 </template>
 
-<template name = "datatest">
-	datatest template
-
-
-	<!--{{#each panels }}
-		{{> panel id=_id}}
-		<br />
-	{{/each}}-->
-
-	{{panelID}}
-</template>
-
 <template name= "panel">
 	<div class="panel" id={{id}}>
 		
@@ -154,7 +137,10 @@
 			this panels id: {{_id}}  <br />
 			created by: {{createdBy}} <br />
 			story content: {{text}} <br />
-			children: {{children}}
+			children: 
+			{{#each children}}		
+				<a class="storyLink" id={{this}}>{{this}}  </a>
+			{{/each}}
 		
 		<form class="new-panel">
 			  	<input type="text" name="text" placeholder="Type your story here" >
@@ -166,10 +152,10 @@
 			there is no panel
 		{{/with}}
 
-
-
-
-		
 	</div>
 	
+</template>
+
+<template name="datatest">
+
 </template>

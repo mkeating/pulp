@@ -31,8 +31,13 @@ Router.route('/story/:_id', function(){
 
   // I think I should set currentStoryID here, via params._id.parentStory. Also allows me to set Title
 
-  console.log( Panels.find().fetch());
+  
+
   var targetPanel = Panels.findOne({_id: this.params._id});
+  var parentStory = Panels.findOne({_id: targetPanel.parentStory});
+  Session.set('activePanel', this.params._id);
+  Session.set('currentStoryID', targetPanel.parentStory);
+  Session.set('title', parentStory.title);
 
   this.render('story', {
     //to: 'story',
@@ -48,7 +53,7 @@ Router.route('/story/:_id', function(){
 StoryController = RouteController.extend({
   action: function () {
     //sets the current story id as a variable so it can be insterted with each new panel
-    //TODO: looks like this is no longer happening
+    //TODO: this may be obsolete now
     this.state.set('currentStoryID', this.params._id);
     this.render();
   }
@@ -72,6 +77,13 @@ if (Meteor.isClient) {
 
   }]);
 //////END ANGULAR STUFF ///////////
+
+  scrollToActive = function(){
+    //console.log('testing global function');
+    $('html, body').animate({
+        scrollTop: $("#"+Session.get('activePanel')).offset().top
+      }, 1000);
+  }
 
   Template.main.events({
     'submit .new-story': function(event){
@@ -98,17 +110,14 @@ if (Meteor.isClient) {
 
       //update this new panel so it's its own parent story
       //TODO: update is overwriting all but these new values?? lol
-      /*Panels.update( 
+      Panels.update( 
           {_id: newStoryID},
-          {parentStory: newStoryID}
-      );*/
+          {$set: {parentStory: newStoryID}}
 
-      console.log('new story submitted! ID: ' + newStoryID);
+      );
    
       event.target.text.value = '';
 
-      //TODO: set currentStoryID on reroute; the Session variable is overwritten on reroute
-      //Session.set('currentStoryID', newStoryID);
       Router.go('/story/' + newStoryID);
   }
 });
@@ -150,12 +159,18 @@ if (Meteor.isClient) {
       console.log('active panel after panel creation is: ' + Session.get('activePanel'));
       var addedPanel = UI.renderWithData(Template.panel, {id: thisID}, $('#workspace').get(0));
 
-      //TODO: this doesnt seem to be working
+      scrollToActive();
 
-      
-   
       event.target.text.value = '';
-  }
+  },
+
+    'click .storyLink': function(event){
+      console.log('link clicked: ' + event.target.id);
+      var addedPanel = UI.renderWithData(Template.panel, {id: event.target.id}, $('#workspace').get(0));
+      Session.set('activePanel', event.target.id);
+      scrollToActive();
+      //TODO: scroll to created panel
+    }
 
 });
 
@@ -189,6 +204,10 @@ Template.panel.helpers({
         return Session.get('activePanel');
       },
 
+      title: function () {
+        return Session.get('title');
+      },
+
       storyLine: function() {
         var panel = Panels.findOne({_id: this.panelID});
         console.log("storyline helper: " + JSON.stringify(panel));
@@ -212,6 +231,7 @@ Template.panel.helpers({
         }
 
         console.log("storyline is:" + JSON.stringify(storyLine));
+        //TODO: this is not working for the first panel in a story
         return storyLine;
       }
   });
@@ -219,7 +239,8 @@ Template.panel.helpers({
   Template.story.rendered = function() {
     if (!this._rendered) {
       this._rendered = true;
-      
+
+      scrollToActive();      
       //Loads the origin panel of the story
       //NOTE: this is obsolete once the storyline builder works; commenting out as it creates a pointless empty panel on story load
 
@@ -259,7 +280,7 @@ if (Meteor.isServer) {
         title: "The Origin",
         text: "The story begins here",
         parentPanel: null,
-        parentStory: null,
+        parentStory: "bespokeID1",
         children: ["bespokeID2"],
         createdAt: null,
         createdBy: "mike", 
@@ -304,11 +325,11 @@ if (Meteor.isServer) {
       });
 
     }
-
-    /*return Meteor.methods({
+    /*
+    return Meteor.methods({
 
       removeAllPanels: function() {
-
+        console.log('remove caled');
         return Panels.remove({});
 
       }
