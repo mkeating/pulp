@@ -2,16 +2,85 @@
   <title>Pulp</title>
 </head>
 
+
 <body ng-app="pulp" >
 
 
-		{{#if currentUser}}
-		  	<h1>navbar</h1>
-		{{else}}
-			<h1>Welcome to Pulp</h1>	
-		{{/if}}
 
 </body>
+
+<template name="ApplicationLayout">
+	<div class="container-fluid">
+
+		<div class="row">
+			{{#if currentUser}}
+			  	{{> nav}}
+			{{else}}
+				<h1>Welcome to Pulp</h1>	
+			{{/if}}
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-3"></div>
+			
+			<div class="col-lg-6 col-md-6 middle">
+
+				
+
+				<div class="main">
+					{{> yield "main"}}
+				</div>
+
+				<div class="storyLine">
+					{{> yield "story"}}
+				</div>
+
+				<div class="datatest">
+					
+					{{> yield "datatest"}}
+				</div>
+
+				<div class="library">
+					{{> yield "library"}}
+				</div>
+
+				</div>
+			
+			<div class="col-lg-3 col-md-3"></div>
+		</div>
+
+
+	</div>
+
+		
+
+
+</template>
+
+<template name="nav">
+	<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Brand</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li><a href="/library">Library</a></li>
+        
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+	</template>
 
 <template name="main">
 	{{#if currentUser}}
@@ -24,8 +93,7 @@
 		  	<input type="text" name="text" placeholder="Type your story here">
 		  	<input type="submit" value="Submit">
 		</form>
-	<h1> Or read an existing story</h1>
-		<a href="/library">Library</a>
+	
 	{{else}}
 		<h1>Sign up or log in</h1>
 		{{> loginButtons}}
@@ -44,21 +112,41 @@
 <template name="story">
 
 	<h1>You are now reading a story </h1>
-	<h2>{{title}}</h2>
+	<h2>Title: {{title}}</h2>
 
 	current story: {{currentStoryID}}<br />
-	active panel: {{activePanel}}
+	active panel: {{activePanel}}<br />
 
-	<div id="workspace">		
+	<div id="workspace">
+
+		{{#each storyLine }}
+			{{> panel id=_id}}
+			<br />
+		{{/each}}
+
 	</div>
 	
 </template>
 
-<template  name= "panel">
-	<div class="panel" id={{_id}}>
+<template name = "datatest">
+	datatest template
+
+
+	<!--{{#each panels }}
+		{{> panel id=_id}}
+		<br />
+	{{/each}}-->
+
+	{{panelID}}
+</template>
+
+<template name= "panel">
+	<div class="panel" id={{id}}>
+		
 		{{#if activePanel id }}
 			<span style="color:red;">THIS IS THE ACTIVE PANEL</span> <br />
 		{{/if}}
+
 
 		{{#with getPanel id}}
 			parent panel : {{parentPanel}} <br />
@@ -67,16 +155,19 @@
 			created by: {{createdBy}} <br />
 			story content: {{text}} <br />
 			children: {{children}}
-
-			<!-- if this out unless active panel -->
+		
 		<form class="new-panel">
 			  	<input type="text" name="text" placeholder="Type your story here" >
-			  	<input type="hidden" name="parent" value="{{_id}}">
+			  	<input type="hidden" name="parent" value= {{_id}} >
 			  	<input type="submit" value="Submit">
 		  	</form>
+
 		{{else}}
 			there is no panel
 		{{/with}}
+
+
+
 
 		
 	</div>

@@ -1,52 +1,54 @@
 Panels = new Mongo.Collection("panels");
 
 //////// URL ROUTING ////////////
-Router.route('/',{
-  template: 'main',
+Router.configure({
+  layoutTemplate: 'ApplicationLayout',
 });
 
-Router.route('/library');  // TODO : for some reason the library links remain in workspace when you click a story url/
-// UPDATE: I think its just rendring the template at the story url, not actually rerouting the browser
-
-Router.route('/story/:_id', {
-  template: 'story',
-  data: function(){
-
-    var currentStory = this.params._id;
-    var panel = Panels.findOne({ _id: currentStory});
-    //console.log('route panel: ' + JSON.stringify(panel));
-    
-    Session.set('currentStoryID', currentStory);
-    Session.set('activePanel', currentStory);
-    
-    if(panel.origin == true){
-      //console.log("origin is true");
-      return Panels.findOne({ _id: currentStory });
-    }else{
-      //Here is where we'll crawl back along parents until an orgin: true
-      //console.log("origin is false");
-      var panels = [panel];
-      var origin = false;
-      var lastPanel;
-      while (origin == false){
-        lastPanel = Panels.findOne({_id: panel.parentPanel});
-        if (lastPanel.origin = true){
-          origin = true;
-        }
-        panels.unshift(lastPanel);
-      }
-      //console.log('all tha panels:' + JSON.stringify(panels));
-      // this is working. TODO: populate a panel template for each in panels
-      return panels;
-    }
-    
-  }
-
+Router.route('/',function(){
+  this.render('main');
 });
+
+Router.route('/library', function(){
+  this.render('library', {to: 'library'});
+
+});  // TODO : for some reason the library links remain in workspace when you click a story url/
+// UPDATE: I think its just rendring the template at the story url, not actually rerouting the browser. user Router.go()?
+
+Router.route('/datatest/:_id', function(){
+  
+
+  this.render('datatest', {
+    to: 'datatest',
+    data: function(){
+      return {panelID: this.params._id};
+    }    
+  });
+    
+});
+
+Router.route('/story/:_id', function(){
+
+  // I think I should set currentStoryID here, via params._id.parentStory. Also allows me to set Title
+
+  console.log( Panels.find().fetch());
+  var targetPanel = Panels.findOne({_id: this.params._id});
+
+  this.render('story', {
+    //to: 'story',
+    data: function() {
+      
+      return {panelID: this.params._id};
+    
+    },
+  });
+});
+
 
 StoryController = RouteController.extend({
   action: function () {
     //sets the current story id as a variable so it can be insterted with each new panel
+    //TODO: looks like this is no longer happening
     this.state.set('currentStoryID', this.params._id);
     this.render();
   }
@@ -56,13 +58,10 @@ StoryController = RouteController.extend({
 
 if (Meteor.isClient) {
 
+
+/////ANGULAR STUFF (might remove) ////////////
+
   angular.module('pulp',['angular-meteor']);
-
-  /*angular.module('pulp').controller('PanelsCtrl', ['$scope', '$meteor', function($scope, $meteor){
-
-    $scope.panels = $meteor.collection(Panels);
-
-  }]);*/
 
   angular.module('pulp').controller('LibraryCtrl', ['$scope', '$meteor', function($scope, $meteor){
 
@@ -72,41 +71,45 @@ if (Meteor.isClient) {
     });
 
   }]);
-
-  angular.module('pulp').controller('StoryCtrl', ['$scope', '$meteor', function($scope, $meteor, panels){
-
-    //what is going on here; i forget why i made this
-    // oh i think this is going to be the storyline creator; taking a story Id as a parameter and climbing back up the parents until origin = true
-    /*$scope.story = $meteor.collection(function (){
-      return Panels.find({origin: true});
-    });*/
-    return panels;
-
-  }]);
+//////END ANGULAR STUFF ///////////
 
   Template.main.events({
     'submit .new-story': function(event){
       event.preventDefault();
+
+      console.log(event.target.text.value);
       var title = event.target.title.value;
       var text = event.target.text.value;
 
-      Panels.insert({
+      var newStoryID = Panels.insert({
         title: title,
         text: text,
         parentPanel: null,
-        parentStory: Session.get('currentStoryID'),
+        parentStory: null,
         children: [],
         createdAt: new Date(),
         createdBy: Meteor.userId(),
         origin: true,
         terminal: false,
-      });
+      }, function(){
+          //TODO: error handling        
+      }
+      );
 
-      console.log('panel submitted');
+      //update this new panel so it's its own parent story
+      //TODO: update is overwriting all but these new values?? lol
+      /*Panels.update( 
+          {_id: newStoryID},
+          {parentStory: newStoryID}
+      );*/
 
-      //TODO: redirect to story view after origin panel creation
+      console.log('new story submitted! ID: ' + newStoryID);
    
       event.target.text.value = '';
+
+      //TODO: set currentStoryID on reroute; the Session variable is overwritten on reroute
+      //Session.set('currentStoryID', newStoryID);
+      Router.go('/story/' + newStoryID);
   }
 });
 
@@ -134,33 +137,22 @@ if (Meteor.isClient) {
         }
       );
 
-      //update parent panel's children with this
+      //update parent panel's children with this new panel
       Panels.update( 
           {_id: parentPanel},
           {$push: {children: thisID}}
       );
 
-      console.log("parent ID: " + parentPanel);
-      //console.log("children: " + Panels.findOne({_id: parentPanel}).fetch());
+      Session.set('activePanel', thisID);
 
-      //add this panel to the view
-      /*var data = {
-          text: text,
-          parentPanel: parentPanel,
-          parentStory: Session.get('currentStoryID'),
-          thisID: thisID
-      };*/
 
       console.log('the created panel, hopefully: ' + JSON.stringify(Panels.findOne({_id: thisID})));
-
-      console.log('thisID:' + thisID);
-
-      //this is returning false, but works in the story rendered
+      console.log('active panel after panel creation is: ' + Session.get('activePanel'));
       var addedPanel = UI.renderWithData(Template.panel, {id: thisID}, $('#workspace').get(0));
-      //console.log(document.getElementById('workspace'));
 
-      Session.set('activePanel', thisID);
-      console.log('panel submitted');
+      //TODO: this doesnt seem to be working
+
+      
    
       event.target.text.value = '';
   }
@@ -171,7 +163,6 @@ Template.panel.helpers({
       activePanel: function (id) {
         //console.log(Session.get('activePanel'));
         if(Session.get('activePanel') == id){
-          console.log('amIActive is true');
           return true;
 
         }else{
@@ -195,26 +186,61 @@ Template.panel.helpers({
       },
 
       activePanel: function () {
-        //console.log(Session.get('activePanel'));
         return Session.get('activePanel');
       },
+
+      storyLine: function() {
+        var panel = Panels.findOne({_id: this.panelID});
+        console.log("storyline helper: " + JSON.stringify(panel));
+        console.log("parent story:" + panel.parentStory);
+        console.log("origin: " + panel.origin);
+        var storyLine = [panel];
+        if(panel.origin == false){
+          var origin = false;
+          var lastPanel;
+
+          while(origin == false){
+            lastPanel = Panels.findOne({_id: panel.parentPanel});
+            storyLine.unshift(lastPanel);
+
+            if (lastPanel.origin == true){
+              origin = true;
+            }
+
+            panel = lastPanel;
+          }
+        }
+
+        console.log("storyline is:" + JSON.stringify(storyLine));
+        return storyLine;
+      }
   });
 
   Template.story.rendered = function() {
     if (!this._rendered) {
       this._rendered = true;
-      console.log('template loaded');
-      console.log('currentStoryID:' + Session.get('currentStoryID'));
-      console.log('active panel: ' + Session.get('activePanel'));
+      
       //Loads the origin panel of the story
-      //console.log("session current ID: " + Session.get('currentStoryID'));
-      var cursor = Panels.find({_id: Session.get('currentStoryID')}, {_id: 1}).fetch();
-      //console.log("first panel data: " + JSON.stringify(cursor));
-      var addedPanel = UI.renderWithData(Template.panel, {id: Session.get('currentStoryID')}, $('#workspace').get(0)); //this works, but it doesnt work in the panel click event
+      //NOTE: this is obsolete once the storyline builder works; commenting out as it creates a pointless empty panel on story load
+
+      //var cursor = Panels.find({_id: Session.get('currentStoryID')}, {_id: 1}).fetch();
+      //var addedPanel = UI.renderWithData(Template.panel, {id: Session.get('currentStoryID')}, $('#workspace').get(0)); //this works, but it doesnt work in the panel click event
     }
   }
 
  ////////// END STORY STUFF ///////////////// 
+
+ Template.datatest.helpers({
+  panels: function(){
+    return Panels.find();
+  },
+
+  panelID: function(){
+    console.log("panelID from datatest helper: "+this.panelID);
+    return this.panelID;
+  }
+
+ });
 
   
 }
@@ -222,13 +248,72 @@ Template.panel.helpers({
 if (Meteor.isServer) {
   Meteor.startup(function () {
     // code to run on server at startup
-  
-  /*Panels.allow({
-    update: function (userId, doc, fields, modifier) {
-      return true;
-    }
-  });*/
 
+    //collection seed
+    if(Panels.find().count() == 0){
+      console.log("collection empty; seeding...");
+
+      Panels.insert(
+      {
+        _id: "bespokeID1",
+        title: "The Origin",
+        text: "The story begins here",
+        parentPanel: null,
+        parentStory: null,
+        children: ["bespokeID2"],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: true,
+        terminal: false,
+      });
+
+      Panels.insert({
+        _id: "bespokeID2",
+        text: "The story continues",
+        parentPanel: "bespokeID1",
+        parentStory: "bespokeID1",
+        children: ["bespokeID3"],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: false,
+        terminal: false,
+      });
+
+      Panels.insert({
+        _id: "bespokeID3",
+        text: "and continues....",
+        parentPanel: "bespokeID2",
+        parentStory: "bespokeID1",
+        children: ["bespokeID4"],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: false,
+        terminal: false,
+      });
+
+      Panels.insert({
+        _id: "bespokeID4",
+        text: "....and goes on and on....",
+        parentPanel: "bespokeID3",
+        parentStory: "bespokeID1",
+        children: [],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: false,
+        terminal: false,
+      });
+
+    }
+
+    /*return Meteor.methods({
+
+      removeAllPanels: function() {
+
+        return Panels.remove({});
+
+      }
+
+    });*/
   });
 
 }

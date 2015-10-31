@@ -1,5 +1,17 @@
 /* CSS declarations go here */
+body{
+	background-color: #F0F8FF;
+}
+
+.middle{
+	background-color: white;
+	border:1px solid gray;
+}
+
 .panel{
 		border: 1px solid black;
 		width: 450px;
+		margin: 0 auto;
+		padding: 20px;
 	}
+
