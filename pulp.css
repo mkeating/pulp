@@ -15,3 +15,51 @@ body{
 		padding: 20px;
 	}
 
+.debug{
+	color:gray;
+	font-size: 10px;
+}
+
+.choice{
+	width:100%;
+	background-color: #6666FF;
+	border:1px solid white;
+	padding: 5px;
+}
+
+.choice a{
+	color: white;
+	text-decoration: none;
+	font-size: 2em;
+	cursor: pointer;
+}
+
+.new-story * {
+	margin: 5px;
+}
+
+.new-panel input{
+	width: 100%;
+}
+
+.new-panel .storyInput {
+	height: 150px;
+}
+
+.new-story input{
+	width: 100%;
+}
+
+.new-story .storyInput {
+	height: 150px;
+}
+
+.libraryCard{
+	border: 1px solid black;
+	height: 200px;
+}
+
+.libraryCard a {
+	text-decoration: none;
+	cursor: pointer;
+}

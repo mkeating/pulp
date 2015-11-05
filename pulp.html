@@ -62,7 +62,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Brand</a>
+      <a class="navbar-brand" href="/">PULP</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -85,8 +85,8 @@
 	<h1>Start something new...</h1>
 		<form class="new-story">
 		  	<input type="text" name="title" placeholder="The title of your story">
-		  	<input type="text" name="text" placeholder="Type your story here">
-		  	<input type="submit" value="Submit">
+		  	<input type="text" name="text" class="storyInput" placeholder="Type your story here">
+		  	<input type="submit" class="btn btn-default" value="Submit">
 		</form>
 	
 	{{else}}
@@ -100,7 +100,25 @@
 <template name="library">
 
 	<h1> Library</h1>
-	<div ng-include="'library.ng.html'" ng-controller="LibraryCtrl"> </div>
+	<!--<div ng-include="'library.ng.html'" ng-controller="LibraryCtrl"> </div>-->
+
+	{{#each stories}}
+		{{> libraryStory }}
+	{{/each}}
+
+</template>
+
+<template name="libraryStory">
+
+	<a href="../story/{{_id}}">
+
+		<div class="libraryCard col-lg-3 col-md-3 col-sm-6">
+			Title: {{title}}<br />
+			Created by: {{createdBy}}
+			
+		</div>
+	</a>
+
 
 </template>
 
@@ -132,21 +150,30 @@
 
 
 		{{#with getPanel id}}
-			parent panel : {{parentPanel}} <br />
-			parent story : {{parentStory}} <br />
-			this panels id: {{_id}}  <br />
-			created by: {{createdBy}} <br />
-			story content: {{text}} <br />
-			children: 
-			{{#each children}}		
-				<a class="storyLink" id={{this}}>{{this}}  </a>
-			{{/each}}
-		
-		<form class="new-panel">
-			  	<input type="text" name="text" placeholder="Type your story here" >
-			  	<input type="hidden" name="parent" value= {{_id}} >
-			  	<input type="submit" value="Submit">
-		  	</form>
+
+			<div class="panelText"> {{text}} </div>
+
+			<div class="debug">
+				parent panel : {{parentPanel}} <br />
+				parent story : {{parentStory}} <br />
+				this panels id: {{_id}}  <br />
+				created by: {{createdBy}} <br />
+				
+				children: 
+				{{#each children}}		
+					{{#with getChild this}}
+					<div class="choice">
+						<a class="storyLink" id={{_id}} > {{choiceName}}  </a>
+					</div>
+					{{/with}}
+				{{/each}}
+			</div>
+
+			{{#if activePanel ../id }}
+
+				{{> form  }}
+	 
+			{{/if}}
 
 		{{else}}
 			there is no panel
@@ -156,6 +183,29 @@
 	
 </template>
 
-<template name="datatest">
+<template name="form">
+
+	{{#if dots }}
+		dots
+		<form class="new-panel">
+			<input type="text" name="text" placeholder="Type your story here" >
+			<input type="hidden" name="parent" value= {{_id}} >
+			<input type="submit" value="Submit">
+		</form>
+				
+	{{/if}}
+
+	{{#if choices }}
+		Continue the story:
+		<form class="new-panel">
+			<input type="text" name="choiceName" placeholder="Type your choice name here (eg 'Enter the cave')" >
+			<input type="textarea" name="text" class="storyInput" placeholder="Type your story here" >
+			<input type="hidden" name="parent" value= {{_id}} >
+			<input type="submit" class="btn btn-default" value="Submit">
+		</form>
+	{{/if}}
+				
 
 </template>
+
+

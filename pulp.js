@@ -13,25 +13,9 @@ Router.route('/library', function(){
   this.render('library', {to: 'library'});
 
 });  // TODO : for some reason the library links remain in workspace when you click a story url/
-// UPDATE: I think its just rendring the template at the story url, not actually rerouting the browser. user Router.go()?
-
-Router.route('/datatest/:_id', function(){
-  
-
-  this.render('datatest', {
-    to: 'datatest',
-    data: function(){
-      return {panelID: this.params._id};
-    }    
-  });
-    
-});
+// UPDATE: I think its just rendring the template at the story url, not actually rerouting the browser. use Router.go()?
 
 Router.route('/story/:_id', function(){
-
-  // I think I should set currentStoryID here, via params._id.parentStory. Also allows me to set Title
-
-  
 
   var targetPanel = Panels.findOne({_id: this.params._id});
   var parentStory = Panels.findOne({_id: targetPanel.parentStory});
@@ -48,16 +32,6 @@ Router.route('/story/:_id', function(){
     },
   });
 });
-
-
-StoryController = RouteController.extend({
-  action: function () {
-    //sets the current story id as a variable so it can be insterted with each new panel
-    //TODO: this may be obsolete now
-    this.state.set('currentStoryID', this.params._id);
-    this.render();
-  }
-})
 
 //////END URL ROUTING /////////////////
 
@@ -79,7 +53,7 @@ if (Meteor.isClient) {
 //////END ANGULAR STUFF ///////////
 
   scrollToActive = function(){
-    //console.log('testing global function');
+
     $('html, body').animate({
         scrollTop: $("#"+Session.get('activePanel')).offset().top
       }, 1000);
@@ -104,23 +78,35 @@ if (Meteor.isClient) {
         origin: true,
         terminal: false,
       }, function(){
-          //TODO: error handling        
+          //TODO: error handling
+          console.log("could not add panel to collection");
       }
       );
 
       //update this new panel so it's its own parent story
-      //TODO: update is overwriting all but these new values?? lol
       Panels.update( 
           {_id: newStoryID},
           {$set: {parentStory: newStoryID}}
-
       );
-   
-      event.target.text.value = '';
 
       Router.go('/story/' + newStoryID);
   }
 });
+
+/////////////// LIBRARY STUFF ////////////
+
+  Template.library.helpers({
+
+    stories: function() {
+      return Panels.find({origin: true}).fetch();
+    }
+  })
+
+
+
+
+///////// END LIBRARY STUFF /////////////
+
 
 
 //////////// PANEL STUFF //////////////
@@ -143,6 +129,7 @@ if (Meteor.isClient) {
         parentPanel: parentPanel,
       }, function(){
           //TODO error handling
+          console.log("could not add panel to collection");
         }
       );
 
@@ -154,9 +141,6 @@ if (Meteor.isClient) {
 
       Session.set('activePanel', thisID);
 
-
-      console.log('the created panel, hopefully: ' + JSON.stringify(Panels.findOne({_id: thisID})));
-      console.log('active panel after panel creation is: ' + Session.get('activePanel'));
       var addedPanel = UI.renderWithData(Template.panel, {id: thisID}, $('#workspace').get(0));
 
       scrollToActive();
@@ -165,27 +149,33 @@ if (Meteor.isClient) {
   },
 
     'click .storyLink': function(event){
-      console.log('link clicked: ' + event.target.id);
+    
       var addedPanel = UI.renderWithData(Template.panel, {id: event.target.id}, $('#workspace').get(0));
       Session.set('activePanel', event.target.id);
       scrollToActive();
-      //TODO: scroll to created panel
     }
 
 });
 
 Template.panel.helpers({
       activePanel: function (id) {
-        //console.log(Session.get('activePanel'));
         if(Session.get('activePanel') == id){
+
           return true;
 
         }else{
+
           return false;
         }
       },
 
       getPanel: function(id) {
+        return Panels.findOne({_id: id});
+      },
+
+      getChild: function(id){
+        console.log('getChild called: ' + id);
+        console.log(Panels.findOne({_id: id}));
         return Panels.findOne({_id: id});
       }
   });
@@ -210,10 +200,8 @@ Template.panel.helpers({
 
       storyLine: function() {
         var panel = Panels.findOne({_id: this.panelID});
-        console.log("storyline helper: " + JSON.stringify(panel));
-        console.log("parent story:" + panel.parentStory);
-        console.log("origin: " + panel.origin);
         var storyLine = [panel];
+
         if(panel.origin == false){
           var origin = false;
           var lastPanel;
@@ -229,41 +217,45 @@ Template.panel.helpers({
             panel = lastPanel;
           }
         }
-
-        console.log("storyline is:" + JSON.stringify(storyLine));
-        //TODO: this is not working for the first panel in a story
         return storyLine;
       }
   });
 
   Template.story.rendered = function() {
     if (!this._rendered) {
+
       this._rendered = true;
 
       scrollToActive();      
-      //Loads the origin panel of the story
-      //NOTE: this is obsolete once the storyline builder works; commenting out as it creates a pointless empty panel on story load
-
-      //var cursor = Panels.find({_id: Session.get('currentStoryID')}, {_id: 1}).fetch();
-      //var addedPanel = UI.renderWithData(Template.panel, {id: Session.get('currentStoryID')}, $('#workspace').get(0)); //this works, but it doesnt work in the panel click event
-    }
+      }
   }
 
  ////////// END STORY STUFF ///////////////// 
 
- Template.datatest.helpers({
-  panels: function(){
-    return Panels.find();
-  },
-
-  panelID: function(){
-    console.log("panelID from datatest helper: "+this.panelID);
-    return this.panelID;
-  }
-
- });
-
+////////// FORM STUFF ////////////
   
+  Template.form.helpers({
+
+
+    //these options turn on and off the 3 link modes
+      dots: function() {
+        console.log('dots called');
+        return false;
+      },
+
+      choices: function() {
+        console.log('choices called');
+        return true;
+      },
+
+      words: function() {
+        //this one might be a little harder to implement
+        return true;
+      }
+  });
+////////// END FORM STUFF /////////////////
+
+  //// END IS CLIENT /////
 }
 
 if (Meteor.isServer) {
@@ -278,7 +270,8 @@ if (Meteor.isServer) {
       {
         _id: "bespokeID1",
         title: "The Origin",
-        text: "The story begins here",
+        choiceName: null,
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
         parentPanel: null,
         parentStory: "bespokeID1",
         children: ["bespokeID2"],
@@ -290,7 +283,8 @@ if (Meteor.isServer) {
 
       Panels.insert({
         _id: "bespokeID2",
-        text: "The story continues",
+        choiceName: "Enter the cave",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
         parentPanel: "bespokeID1",
         parentStory: "bespokeID1",
         children: ["bespokeID3"],
@@ -302,10 +296,11 @@ if (Meteor.isServer) {
 
       Panels.insert({
         _id: "bespokeID3",
-        text: "and continues....",
+        choiceName: "Examine the waterfall",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
         parentPanel: "bespokeID2",
         parentStory: "bespokeID1",
-        children: ["bespokeID4"],
+        children: ["bespokeID4", "bespokeID5", "bespokeID6"],
         createdAt: null,
         createdBy: "mike", 
         origin: false,
@@ -314,7 +309,8 @@ if (Meteor.isServer) {
 
       Panels.insert({
         _id: "bespokeID4",
-        text: "....and goes on and on....",
+        choiceName: "Wake up the gnome",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
         parentPanel: "bespokeID3",
         parentStory: "bespokeID1",
         children: [],
@@ -324,17 +320,113 @@ if (Meteor.isServer) {
         terminal: false,
       });
 
+      Panels.insert({
+        _id: "bespokeID5",
+        choiceName: "Examine the urn",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
+        parentPanel: "bespokeID3",
+        parentStory: "bespokeID1",
+        children: [],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: false,
+        terminal: false,
+      });
+
+      Panels.insert({
+        _id: "bespokeID6",
+        choiceName: "Wait and see what the gnome does",
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
+        parentPanel: "bespokeID3",
+        parentStory: "bespokeID1",
+        children: [],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: false,
+        terminal: false,
+      });
+
+      ////// Second Story //////////
+      Panels.insert(
+      {
+        _id: "bespokeID7",
+        title: "The Second Story",
+        choiceName: null,
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
+        parentPanel: null,
+        parentStory: "bespokeID7",
+        children: [],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: true,
+        terminal: false,
+      });
+    
+      ////// Third Story //////////
+      Panels.insert(
+      {
+        _id: "bespokeID8",
+        title: "The Third Story",
+        choiceName: null,
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
+        parentPanel: null,
+        parentStory: "bespokeID8",
+        children: [],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: true,
+        terminal: false,
+      });
+
+      ////// Fourth Story //////////
+      Panels.insert(
+      {
+        _id: "bespokeID9",
+        title: "The Fourth Story",
+        choiceName: null,
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
+        parentPanel: null,
+        parentStory: "bespokeID9",
+        children: [],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: true,
+        terminal: false,
+      });
+
+      ////// Fifth Story //////////
+      Panels.insert(
+      {
+        _id: "bespokeID10",
+        title: "The Fifth Story",
+        choiceName: null,
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
+        parentPanel: null,
+        parentStory: "bespokeID10",
+        children: [],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: true,
+        terminal: false,
+      });
+
+      ////// Sixth Story //////////
+      Panels.insert(
+      {
+        _id: "bespokeID11",
+        title: "The Sixth Story",
+        choiceName: null,
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dictum, elit a tristique varius, elit mauris porttitor neque, id maximus sem elit vel sapien. Maecenas a metus molestie, luctus sem nec, venenatis mauris. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque vitae varius tellus. Vestibulum nibh nisl, molestie non gravida et, consectetur vitae mauris. Proin ac fringilla magna, eu placerat risus. Nullam mollis consequat malesuada. Integer ut laoreet dui. Curabitur in lacinia diam. Praesent velit neque, suscipit a tortor non, bibendum eleifend enim. Praesent vitae interdum arcu. Duis et dapibus eros, id dictum felis. Nunc ut mauris nec mi gravida maximus. Maecenas ut nunc vitae neque gravida gravida. Morbi quis erat elit. Ut rhoncus sed est imperdiet ullamcorper. Quisque a ultrices turpis. Suspendisse potenti. Sed sodales augue augue, vel imperdiet dui efficitur et. Morbi rhoncus volutpat ligula non pharetra. Suspendisse potenti. Cras tristique imperdiet est, eget fermentum nunc fermentum vitae. Nam eget justo dignissim, dignissim massa convallis, semper eros. Vestibulum auctor, augue ut sollicitudin mattis, augue magna lobortis libero, non cursus purus orci sed arcu. Morbi iaculis erat ante, sed fringilla lorem tempor ut. In nulla elit, euismod id leo in, aliquam imperdiet nulla.",
+        parentPanel: null,
+        parentStory: "bespokeID11",
+        children: [],
+        createdAt: null,
+        createdBy: "mike", 
+        origin: true,
+        terminal: false,
+      });
     }
-    /*
-    return Meteor.methods({
-
-      removeAllPanels: function() {
-        console.log('remove caled');
-        return Panels.remove({});
-
-      }
-
-    });*/
+    
   });
 
 }
