@@ -101,12 +101,40 @@ if (Meteor.isClient) {
       return Panels.find({origin: true}).fetch();
     }
   })
-
-
-
-
 ///////// END LIBRARY STUFF /////////////
 
+
+////////// USER STUFF /////////////
+
+Template.register.events({
+  'submit form': function(event){
+    event.preventDefault();
+    var email = event.target.registerEmail.value;
+    var password = event.target.registerPassword.value;
+    Accounts.createUser({
+      email: email,
+      password: password,
+    });
+  }
+});
+
+Template.login.events({
+  'submit form': function(event){
+    event.preventDefault();
+    var email = event.target.loginEmail.value;
+    var password = event.target.loginPassword.value;
+    Meteor.loginWithPassword(email, password);
+  }
+});
+
+Template.nav.events({
+  'click .logout': function(event){
+    event.preventDefault();
+    Meteor.logout();
+  }
+});
+
+///////// END USER STUFF ///////////////
 
 
 //////////// PANEL STUFF //////////////

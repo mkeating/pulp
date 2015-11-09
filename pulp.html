@@ -16,7 +16,9 @@
 			{{#if currentUser}}
 			  	{{> nav}}
 			{{else}}
-				<h1>Welcome to Pulp</h1>	
+				<h1>Welcome to Pulp</h1>
+				{{> register}}
+				{{> login}}	
 			{{/if}}
 		</div>
 		<div class="row">
@@ -70,6 +72,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
         <li><a href="/library">Library</a></li>
+        <li><a class=".logout">Log out</a></li>
         
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -205,7 +208,22 @@
 		</form>
 	{{/if}}
 				
+</template>
 
+<template name="login">
+	<form>
+		<input type="email" name="loginEmail">
+		<input type="password" name="loginPassword">
+		<input type="submit" value="Login">
+	</form>
+</template>
+
+<template name="register">
+	<form>
+		<input type="email" name="registerEmail">
+		<input type="password" name="registerPassword">
+		<input type="submit" value="Register">
+	</form>
 </template>
 
 
