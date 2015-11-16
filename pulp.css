@@ -3,15 +3,38 @@ body{
 	background-color: #F0F8FF;
 }
 
+span:hover {
+	color:green;
+}
+
+.register{
+	background-color: black;
+	margin-top:40%;
+	color: white;
+}
+
+.register input{
+	background: none;
+	width: 80%;
+	margin: 5px;
+	border: 1px solid white;
+	color: white;
+}
+
+.logout{
+	cursor: pointer;
+}
+
 .middle{
 	background-color: white;
-	border:1px solid gray;
+	border: 1px solid gray;
 }
 
 .panel{
 		border: 1px solid black;
 		width: 450px;
 		margin: 0 auto;
+		margin-top:10px;
 		padding: 20px;
 	}
 
@@ -38,13 +61,36 @@ body{
 	margin: 5px;
 }
 
+
 .new-panel input{
 	width: 100%;
+}
+
+.addChoiceButton{
+	font-size: 2em;
+	cursor: pointer;
+	border: 1px solid black;
+}
+
+.hiddenInputs{
+	display: none;
 }
 
 .new-panel .storyInput {
 	height: 150px;
 }
+
+.new-panel .choiceNameInput {
+	width: 80%;
+	display: inline;
+}
+
+.new-panel .addChoiceButton {
+	min-width: 30%;
+	display: inline;
+}
+
+
 
 .new-story input{
 	width: 100%;
@@ -54,12 +100,33 @@ body{
 	height: 150px;
 }
 
+.new-story .hiddenInputs {
+	width: 100%;
+
+} 
+
 .libraryCard{
 	border: 1px solid black;
-	height: 200px;
+	height: 400px;
+	margin: 5px;
+	overflow: hidden;
 }
 
-.libraryCard a {
+.libraryLink {
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.libraryHeader {
+	width: 100%;
+	text-align: center;
+}
+
+.textPreview{
+	font-size: .7em;
+}
+
+.error{
+	font-size: .7em;
+	color: red;
 }
