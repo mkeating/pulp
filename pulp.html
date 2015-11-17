@@ -154,7 +154,7 @@
 	<h2>Title: {{title}}</h2>
 
 	current story: {{currentStoryID}}<br />
-	active panel: {{activePanel}}<br />
+	<!--active panel: {{activePanel}}<br />-->
 
 	<div id="workspace">
 
@@ -174,8 +174,14 @@
 			<span style="color:red;">THIS IS THE ACTIVE PANEL</span> <br />
 		{{/if}}
 
+		<div class="bookmarkButton">Bookmark</div>
 
 		{{#with getPanel id}}
+
+			{{#with getAvatar createdBy}}
+				<!--<img src={{avatar}} class="img-circle"/>-->
+				<img src={{profile.avatar}} class="img-circle"/>
+			{{/with}}
 
 			<div class="panelText"> {{{text}}} </div>
 
@@ -242,9 +248,8 @@
 
 <template name="register">
 	<form>
-		<div class="error"></div>
+		<div class="error">{{getErrors}}</div>
 		<input type="email" name="registerEmail" placeholder="Enter your email...">
-		<div class="error"></div>
 		<input type="password" name="registerPassword" placeholder="Enter your password...">
 		<input type="submit" class="btn btn-default" value="Register">
 	</form>

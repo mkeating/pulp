@@ -7,6 +7,10 @@ span:hover {
 	color:green;
 }
 
+.red {
+	color:red;
+}
+
 .register{
 	background-color: black;
 	margin-top:40%;
@@ -90,7 +94,10 @@ span:hover {
 	display: inline;
 }
 
-
+.bookmarkButton {
+	color: red;
+	border: 1px solid blue;
+}
 
 .new-story input{
 	width: 100%;

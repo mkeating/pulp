@@ -7,10 +7,15 @@
 
     validate all inputs - user and story
     implement tags
-    implement user bookmarks and avatars
+    implement user DONE: bookmarks and DONE: avatars
+    user profile page with go to bookmarks and change avatar (maybe)
 
     by-word branches
         DONE: allow html in meteor output (currently prints out tags as text)
+        DONE: add class on click
+        permanent add id on panel submit
+        ways to back out (click outside, a Cancel button)
+        lock that word for other users
 
     first sign in demo/tutorial? 
 
@@ -19,6 +24,12 @@
     DONE: library card: truncated text of first panel, other options (created by, scoring, etc)
 
     big collection seed
+
+  BUGS:
+    when creating a new child for bespokeID1(or a new origin panel), activePanel doesnt update reactively. 
+    works as expected when starting at non-origin panels
+      FIXED: moved the session set out of the router, router was being called on form submit despite preventDefault
+
 
 */
 
@@ -43,7 +54,7 @@ Router.route('/story/:_id', function(){
 
   var targetPanel = Panels.findOne({_id: this.params._id});
   var parentStory = Panels.findOne({_id: targetPanel.parentStory});
-  Session.set('activePanel', this.params._id);
+  console.log('router called...');
   Session.set('currentStoryID', targetPanel.parentStory);
   Session.set('title', parentStory.title);
 
@@ -59,22 +70,25 @@ Router.route('/story/:_id', function(){
 if (Meteor.isClient) {
 
   scrollToActive = function(){
+    console.log('scrollToActive active: ' + Session.get('activePanel'));
 
     $('html, body').animate({
         scrollTop: $("#"+Session.get('activePanel')).offset().top
       }, 1000);
+
+    //Need to prevent page reload
+    return false;
   }
 
   spanify = function(text){
+
+    //TODO: strip all existing tags
     var words = text.split(' ');
-    console.log(words);
     var spanifiedText = '';
 
     words.forEach(function(word){
-      console.log(word);
       word = '<span>' + word + '</span>';
       spanifiedText += word + ' ';
-      console.log(spanifiedText);
     })
 
 
@@ -85,7 +99,6 @@ if (Meteor.isClient) {
     'submit .new-story': function(event){
       event.preventDefault();
 
-      console.log(event.target.text.value);
       var title = event.target.title.value;
       var text = event.target.text.value;
 
@@ -103,7 +116,6 @@ if (Meteor.isClient) {
         terminal: false,
       }, function(){
           //TODO: error handling
-          console.log("could not add panel to collection");
       }
       );
 
@@ -132,7 +144,6 @@ if (Meteor.isClient) {
       
       //TODO: use regex to clear all tags
       var cleanTags = text.replace(/<span>/g, '');
-      console.log('cleanTags: ' + cleanTags);
 
       cleanTags = cleanTags.replace(/<\/span>/g, '');
       var truncatedText = cleanTags.substring(0, 500) + "...";
@@ -146,7 +157,7 @@ if (Meteor.isClient) {
 
 Template.register.events({
   'submit form': function(event){
-    
+    event.preventDefault();
 
     //trims whitespace
     var trimInput = function(text){
@@ -157,23 +168,44 @@ Template.register.events({
     var email = trimInput(event.target.registerEmail.value);
     var password = event.target.registerPassword.value;
 
-    event.preventDefault();
+    var options = {
+        email: email,
+        password: password,
+        profile: {
+            avatar: '/img/placeholder_avatar_300x300.png',
+            bookmarks: [],
+        },
+    };
 
-    Accounts.createUser({
-      email: email,
-      password: password,
-    });
-    Meteor.loginWithPassword(email, password);
+    Accounts.createUser(options, function(error){
+      if(error){
+        console.log(error.message);
+        Session.set('errorMessage', error.message);
+      }
+      else{
+        console.log('registered');
+        Session.set('errorMessage', null);
+        Meteor.loginWithPassword(email, password);
+      }
+    });  
   }
 });
 
+Template.register.helpers({
+  getErrors: function(){
+    return Session.get('errorMessage');
+  }
+})
+
 Template.login.events({
   'submit form': function(event){
+
+    event.preventDefault();
     
     var email = event.target.loginEmail.value;
     var password = event.target.loginPassword.value;
     var errorMessage;
-    event.preventDefault();
+    
 
     //TODO: is this sending email and password to the url???
 
@@ -218,15 +250,20 @@ Template.nav.events({
 
   Template.panel.events({
     'submit .new-panel': function(event){
+      console.log("event is: " + event.type);
       event.preventDefault();
+
+      console.log(event.type);
 
       var text = event.target.text.value;
       var parentPanel = event.target.parent.value;
+      var choiceName = event.target.choiceName.value;
 
-      //TODO: add spanify, validate and feedback
+      //TODO: add validation and feedback
 
       var thisID = Panels.insert({
-        text: text,
+        text: spanify(text),
+        choiceName: choiceName,
         createdAt: new Date(),
         createdBy: Meteor.userId(),
         origin: false,
@@ -236,7 +273,6 @@ Template.nav.events({
         parentPanel: parentPanel,
       }, function(){
           //TODO error handling
-          console.log("could not add panel to collection");
         }
       );
 
@@ -246,11 +282,16 @@ Template.nav.events({
           {$push: {children: thisID}}
       );
 
+      console.log('new panel setting active....');
       Session.set('activePanel', thisID);
+      console.log('panel create active panel: ' + Session.get('activePanel'));
+
       var addedPanel = UI.renderWithData(Template.panel, {id: thisID}, $('#workspace').get(0));
+      console.log('scrolling to active...');
       scrollToActive();
 
       event.target.text.value = '';
+      return false;
   },
 
     'click .storyLink': function(event){
@@ -258,13 +299,27 @@ Template.nav.events({
       var addedPanel = UI.renderWithData(Template.panel, {id: event.target.id}, $('#workspace').get(0));
       Session.set('activePanel', event.target.id);
       scrollToActive();
+    },
+
+    'click span': function(event){
+      $(event.currentTarget).addClass('red');
+    },
+
+    'click .bookmarkButton': function(event){
+      //TODO: prevent redundancies
+      Meteor.users.update(Meteor.userId(), {$push: {'profile.bookmarks': event.target.parentElement.id}});
+      console.log('bookmarks updated:' + event.target.parentElement.id);
+
     }
 
 });
 
 Template.panel.helpers({
       activePanel: function (id) {
+        console.log('panel helper input: ' + id);
+        console.log('panel helper active:' + Session.get('activePanel'));
         if(Session.get('activePanel') == id){
+          console.log('found true');
           return true;
         }else{
           return false;
@@ -278,6 +333,13 @@ Template.panel.helpers({
       //is this superfluous? can i just call getPanel?
       getChild: function(id){
         return Panels.findOne({_id: id});
+      },
+
+      getAvatar: function(id){
+        console.log('getting avatar for: '+ id);
+        console.log(Meteor.users.findOne(id).profile.avatar);
+        return avatar = Meteor.users.findOne(id);
+        //return avatar = Meteor.users.findOne(id, {fields: {'profile.avatar': 1}});
       }
   });
 
@@ -291,9 +353,10 @@ Template.panel.helpers({
         return Session.get('currentStoryID');
       },
 
-      activePanel: function () {
+      /*activePanel: function () {
+        console.log('story helper active: ' + Session.get('activePanel'));
         return Session.get('activePanel');
-      },
+      },*/
 
       title: function () {
         return Session.get('title');
@@ -327,6 +390,7 @@ Template.panel.helpers({
 
       this._rendered = true;
 
+      Session.set('activePanel', Session.get('currentStoryID'));
       scrollToActive();      
       }
   }
@@ -342,20 +406,23 @@ Template.panel.helpers({
       $('html, body').animate({
         scrollTop: $(".hiddenInputs").offset().top
       }, 1000);
+    },
+
+    'submit .new-panel': function(event){
+      console.log('form helper preventing default');
+      event.preventDefault;
     }
-  })
+  });
   
   Template.form.helpers({
 
 
     //these options turn on and off the 3 link modes
       dots: function() {
-        console.log('dots called');
         return false;
       },
 
       choices: function() {
-        console.log('choices called');
         return true;
       },
 
@@ -370,6 +437,7 @@ Template.panel.helpers({
 }
 
 if (Meteor.isServer) {
+
   Meteor.startup(function () {
     // code to run on server at startup
 
@@ -539,6 +607,7 @@ if (Meteor.isServer) {
     }
     
   });
+
 
 }
 
