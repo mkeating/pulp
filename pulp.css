@@ -1,6 +1,10 @@
 /* CSS declarations go here */
 body{
-	background-color: #F0F8FF;
+	background-color: black;
+}
+
+.middle {
+	background-color: white;
 }
 
 span:hover {
@@ -11,17 +15,36 @@ span:hover {
 	color:red;
 }
 
-.register{
+.registerBox{
 	background-color: black;
 	margin-top:40%;
 	color: white;
+	text-align: center;
 }
 
-.register input{
+.loginBox {
+	margin: 10px;
+	text-align: center;
+}
+
+#signUp input{
 	background: none;
-	width: 80%;
-	margin: 5px;
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 10px;
 	border: 1px solid white;
+	color: white;
+}
+
+#login input{
+	width: 100%;
+	margin-top: 5px;
+	color: black;
+
+}
+
+.modal-content {
+	background-color: gray;
 	color: white;
 }
 
@@ -70,6 +93,11 @@ span:hover {
 	width: 100%;
 }
 
+.avatar{
+	height: 45px;
+	width: 45px;
+}
+
 .addChoiceButton{
 	font-size: 2em;
 	cursor: pointer;
@@ -114,8 +142,8 @@ span:hover {
 
 .libraryCard{
 	border: 1px solid black;
-	height: 400px;
-	margin: 5px;
+	min-height: 400px;
+	/*margin: 5px;*/
 	overflow: hidden;
 }
 
@@ -136,4 +164,10 @@ span:hover {
 .error{
 	font-size: .7em;
 	color: red;
+}
+
+.navbar {
+	border: none;
+	background-color: black;
+	color: white;
 }

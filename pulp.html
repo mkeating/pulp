@@ -42,12 +42,15 @@
 			<!-- bootstrap layout specific for no logged in users -->
 			<div class="col-lg-4 col-md-3"></div>
 			<div class="col-lg-4 col-md-6">
-				<div class="register">	
+				<div class="registerBox">	
 				<h1>PULP</h1>	
 					<h2>Sign up!</h2>	
 					{{> register}}
 
-					Or <a data-toggle="modal" data-target="#loginModal">Login...</a>
+					<div class="loginBox">
+						Or
+						<h2><a data-toggle="modal" data-target="#loginModal">Login...</a></h2>
+					</div>
 				</div>
 				
 				<!-- Login Modal -->
@@ -66,6 +69,8 @@
 						</div>
 					</div>
 				</div>
+				<!-- end login modal -->
+
 			</div>
 			<div class="col-lg-4 col-md-3"></div>
 		{{/if}}
@@ -106,6 +111,7 @@
 		<form class="new-story">
 		  	<input type="text" name="title" placeholder="The title of your story">
 		  	<input type="text" name="text" class="storyInput" placeholder="Type your story here">
+		  	<input type="text" name="tags" class="tagsInput" placeholder="Enter tags (seperated by spaces"> 
 		  	<input type="submit" class="btn btn-default" value="Submit">
 		</form>
 
@@ -134,9 +140,14 @@
 
 	<a href="../story/{{_id}}" class="libraryLink">
 
-		<div class="libraryCard col-lg-3 col-md-3 col-sm-6">
+		<div class="libraryCard col-lg-3 col-md-3 col-sm-4 col-xs-6">
 			<div class="libraryHeader"> <h2>{{title}}</h2>
 				Created by: {{createdBy}}
+			</div>
+			<div class="tags">
+				{{#each tags}}
+					<div class="tag"> {{tag}} </div>
+				{{/each}}
 			</div>
 			<div class="textPreview">
 				{{truncatedText text}}
@@ -179,18 +190,17 @@
 		{{#with getPanel id}}
 
 			{{#with getAvatar createdBy}}
-				<!--<img src={{avatar}} class="img-circle"/>-->
-				<img src={{profile.avatar}} class="img-circle"/>
+				<img src={{profile.avatar}} class="img-circle img-responsive avatar"/>
 			{{/with}}
 
 			<div class="panelText"> {{{text}}} </div>
 
-			<div class="debug">
+			<!--<div class="debug">
 				parent panel : {{parentPanel}} <br />
 				parent story : {{parentStory}} <br />
 				this panels id: {{_id}}  <br />
 				created by: {{createdBy}} <br />
-			</div>
+			</div>-->
 
 			{{#if activePanel ../id }}
 				{{#each children}}		
@@ -238,16 +248,16 @@
 </template>
 
 <template name="login">
-	<form>
+	<form id="login">
 		<div class="error">{{getErrors}}</div>
-		<input type="email" name="loginEmail">
-		<input type="password" name="loginPassword">
+		<input type="email" name="loginEmail" placeholder="Email...">
+		<input type="password" name="loginPassword" placeholder="Password...">
 		<input type="submit" class="btn btn-default" value="Login">
 	</form>
 </template>
 
 <template name="register">
-	<form>
+	<form id="signUp">
 		<div class="error">{{getErrors}}</div>
 		<input type="email" name="registerEmail" placeholder="Enter your email...">
 		<input type="password" name="registerPassword" placeholder="Enter your password...">

@@ -5,8 +5,9 @@
 
   Global TODO:
 
-    validate all inputs - user and story
-    implement tags
+    validate all inputs - DONE: user and story
+    DONE: implement tags
+      test tags
     implement user DONE: bookmarks and DONE: avatars
     user profile page with go to bookmarks and change avatar (maybe)
 
@@ -69,6 +70,8 @@ Router.route('/story/:_id', function(){
 
 if (Meteor.isClient) {
 
+
+  //// GLOBAL HELPERS //////////////
   scrollToActive = function(){
     console.log('scrollToActive active: ' + Session.get('activePanel'));
 
@@ -95,18 +98,39 @@ if (Meteor.isClient) {
     return spanifiedText;
   }
 
+
+  ///////// END GLOBAL HELPERS ////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //////////MAIN/HOME STUFF ////////////////
+
   Template.main.events({
     'submit .new-story': function(event){
       event.preventDefault();
 
       var title = event.target.title.value;
       var text = event.target.text.value;
+      var tags = event.target.tags.value.split(' ');
 
       //TODO: add spanify 
 
       var newStoryID = Panels.insert({
         title: title,
         text: text,
+        tags: tags,
         parentPanel: null,
         parentStory: null,
         children: [],
@@ -128,6 +152,18 @@ if (Meteor.isClient) {
       Router.go('/story/' + newStoryID);
   }
 });
+
+//////////// END MAIN/HOME STUFF //////////////////
+
+
+
+
+
+
+
+
+
+
 
 /////////////// LIBRARY STUFF ////////////
 
@@ -151,6 +187,29 @@ if (Meteor.isClient) {
     }
   })
 ///////// END LIBRARY STUFF /////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ////////// USER STUFF /////////////
@@ -186,6 +245,7 @@ Template.register.events({
         console.log('registered');
         Session.set('errorMessage', null);
         Meteor.loginWithPassword(email, password);
+        // TODO: a redirect to /? got some go to story after register
       }
     });  
   }
@@ -244,6 +304,28 @@ Template.nav.events({
 });
 
 ///////// END USER STUFF ///////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //////////// PANEL STUFF //////////////
@@ -307,6 +389,20 @@ Template.nav.events({
 
     'click .bookmarkButton': function(event){
       //TODO: prevent redundancies
+      
+      var toBeBookmarked = event.target.parentElement.id;
+
+
+      /*
+        get all bookmarks
+        if(!all.includes(toBeBookmarked)){
+          update
+        }else{
+          do nothing, or provide feedback
+          another idea is make the button not clickable with visual feedback if already in bookmarks
+        }
+
+      */
       Meteor.users.update(Meteor.userId(), {$push: {'profile.bookmarks': event.target.parentElement.id}});
       console.log('bookmarks updated:' + event.target.parentElement.id);
 
@@ -344,6 +440,19 @@ Template.panel.helpers({
   });
 
 ///////// END PANEL STUFF ///////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 //////// STORY STUFF ///////////////////////
@@ -397,6 +506,18 @@ Template.panel.helpers({
 
  ////////// END STORY STUFF ///////////////// 
 
+
+
+
+
+
+
+
+
+
+
+
+
 ////////// FORM STUFF ////////////
 
   Template.form.events({
@@ -435,6 +556,23 @@ Template.panel.helpers({
 
   //// END IS CLIENT /////
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if (Meteor.isServer) {
 
