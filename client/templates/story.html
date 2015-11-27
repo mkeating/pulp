@@ -1,0 +1,14 @@
+<template name="story">
+	<h1>You are now reading a story </h1>
+	<h2>Title: {{title}}</h2>
+
+	current story: {{currentStoryID}}<br />
+	<!--active panel: {{activePanel}}<br />-->
+
+	<div id="workspace">
+		{{#each storyLine }}
+			{{> panel id=_id}}
+			<br />
+		{{/each}}
+	</div>
+</template>

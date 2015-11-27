@@ -1,0 +1,30 @@
+<template name="form">
+
+	{{#if dots }}
+		dots
+		<form class="new-panel">
+			<input type="text" name="text" placeholder="Type your story here" >
+			<input type="hidden" name="parent" value= {{_id}} >
+			<input type="submit" value="Submit">
+		</form>
+				
+	{{/if}}
+
+	{{#if choices }}
+		Continue the story:
+		<form class="new-panel">
+				<div class="addChoiceButton glyphicon glyphicon-plus"></div>
+				<div class="choiceNameInputBar">
+					<input type="text" class="choiceNameInput" name="choiceName" placeholder="Type your choice name here (eg 'Enter the cave')" >
+				</div>
+				
+				
+			<div class="hiddenInputs">
+				<input type="textarea" name="text" class="storyInput" placeholder="Type your story here" >
+				<input type="hidden" name="parent" value= {{_id}} >
+				<input type="submit" class="btn btn-default" value="Submit">
+			</div>
+		</form>
+	{{/if}}
+				
+</template>

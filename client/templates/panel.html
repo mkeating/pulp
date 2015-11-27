@@ -1,0 +1,42 @@
+<template name= "panel">
+	<div class="panel" id={{id}}>
+		
+		<!--{{#if activePanel id }}
+			<span style="color:red;">THIS IS THE ACTIVE PANEL</span> <br />
+		{{/if}}-->
+
+		{{#with getPanel id}}
+
+		<div class="panelHeader ">
+			<div class="bookmarkButton glyphicon glyphicon-bookmark"></div>
+			{{#with getAvatar createdBy}}
+				<img src={{profile.avatar}} class="img-circle img-responsive avatar"/>
+			{{/with}}
+		</div>
+
+			<div class="panelText"> {{{text}}} </div>
+
+			<!--<div class="debug">
+				parent panel : {{parentPanel}} <br />
+				parent story : {{parentStory}} <br />
+				this panels id: {{_id}}  <br />
+				created by: {{createdBy}} <br />
+			</div>-->
+
+			{{#if activePanel ../id }}
+				{{#each children}}		
+					{{#with getChild this}}
+						<div class="choice">
+							<a class="storyLink" id={{_id}} > {{choiceName}}  </a>
+						</div>
+					{{/with}}
+				{{/each}}
+
+				{{> form  }}
+			{{/if}}
+
+		{{else}}
+			there is no panel
+		{{/with}}
+	</div>
+</template>
