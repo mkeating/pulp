@@ -20,6 +20,7 @@ span:hover {
 	margin-top:40%;
 	color: white;
 	text-align: center;
+	border: 1px solid white;
 }
 
 .loginBox {
@@ -166,6 +167,7 @@ span:hover {
 .libraryCard{
 	border: 1px solid black;
 	min-height: 400px;
+	background-color: white;
 	/*margin: 5px;*/
 	overflow: hidden;
 }
