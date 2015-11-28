@@ -5,10 +5,18 @@
 			<span style="color:red;">THIS IS THE ACTIVE PANEL</span> <br />
 		{{/if}}-->
 
-		{{#with getPanel id}}
 
-		<div class="panelHeader ">
-			<div class="bookmarkButton glyphicon glyphicon-bookmark"></div>
+
+		{{#with getPanel id}}
+		
+		<div class="panelHeader">
+
+			{{#with isBookmarked ../id}}
+				
+			
+			
+			<div class="bookmarkButton {{glyphClass}}"></div>
+			{{/with}}
 			{{#with getAvatar createdBy}}
 				<img src={{profile.avatar}} class="img-circle img-responsive avatar"/>
 			{{/with}}

@@ -3,16 +3,16 @@ body{
 	background-color: black;
 }
 
+.red {
+	color:red;
+}
+
 .middle {
 	background-color: white;
 }
 
 span:hover {
 	color:green;
-}
-
-.red {
-	color:red;
 }
 
 .registerBox{
@@ -167,9 +167,22 @@ span:hover {
 .libraryCard{
 	border: 1px solid black;
 	min-height: 400px;
+	height: 400px;
 	background-color: white;
 	/*margin: 5px;*/
 	overflow: hidden;
+	position: relative;
+	z-index: 1;
+}
+
+
+.fade{
+	position: absolute;
+	bottom: 0;
+	height: 70px;
+	width: 100%;
+	background-color: white;
+	z-index: 2;
 }
 
 .libraryLink {

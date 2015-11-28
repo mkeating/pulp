@@ -4,11 +4,20 @@
       console.log("event is: " + event.type);
       event.preventDefault();
 
-      console.log(event.type);
+      //console.log(event.type);
 
       var text = event.target.text.value;
       var parentPanel = event.target.parent.value;
       var choiceName = event.target.choiceName.value;
+
+      if(text == ''){
+        Session.set('storyError', "This can't be empty");
+        if(choiceName == ''){
+          Session.set('choiceError', "This can't be empty");
+          console.log(Session.get('choiceError'));
+        }
+        return false;
+      }
 
       //TODO: add validation and feedback
 
@@ -57,23 +66,21 @@
     },
 
     'click .bookmarkButton': function(event){
-      //TODO: prevent redundancies
+      //TODO: prevent redundancies, prevent multiclicks, success feedback
       
-      var toBeBookmarked = event.target.parentElement.id;
+      var toBeBookmarked = event.target.parentElement.parentElement.id;
 
+      if(Meteor.user().profile.bookmarks.indexOf(toBeBookmarked) == -1){
+        console.log ('we can add this shit');
+        Meteor.users.update(Meteor.userId(), {$push: {'profile.bookmarks': toBeBookmarked}});
 
-      /*
-        get all bookmarks
-        if(!all.includes(toBeBookmarked)){
-          update
-        }else{
-          do nothing, or provide feedback
-          another idea is make the button not clickable with visual feedback if already in bookmarks
-        }
+      }
+      else {
+        console.log('this is already bookmarked');
+        Meteor.users.update(Meteor.userId(), {$pull: {'profile.bookmarks': toBeBookmarked}});
+      }
 
-      */
-      Meteor.users.update(Meteor.userId(), {$push: {'profile.bookmarks': event.target.parentElement.id}});
-      console.log('bookmarks updated:' + event.target.parentElement.id);
+      console.log(Meteor.user().profile.bookmarks);
 
     }
 
@@ -81,8 +88,6 @@
 
 Template.panel.helpers({
       activePanel: function (id) {
-        console.log('panel helper input: ' + id);
-        console.log('panel helper active:' + Session.get('activePanel'));
         if(Session.get('activePanel') == id){
           console.log('found true');
           return true;
@@ -104,6 +109,21 @@ Template.panel.helpers({
         console.log('getting avatar for: '+ id);
         console.log(Meteor.users.findOne(id).profile.avatar);
         return avatar = Meteor.users.findOne(id);
-        //return avatar = Meteor.users.findOne(id, {fields: {'profile.avatar': 1}});
+      },
+
+      isBookmarked: function(id){
+
+        console.log('isBookmarked called: ' + id);
+        if(Meteor.user().profile.bookmarks.indexOf(id) == -1){
+          console.log('isBookmarked called: ' + false);
+          return {glyphClass: 'glyphicon glyphicon-bookmark'};
+          
+        }else{
+          console.log('isBookmarked called: ' + true);
+          return {glyphClass:'glyphicon glyphicon-ok'};
+        }
+        
       }
+
+      
   });

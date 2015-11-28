@@ -31,8 +31,9 @@
     works as expected when starting at non-origin panels
       FIXED: moved the session set out of the router, router was being called on form submit despite preventDefault
 
-    
-
+    NOTES/BLOG ideas:
+      you cant send a string (class declaration, etc) from a helper to a template, but you can send an object! see isBookmarked
+      including both data returned from a helper and text as an attribute in a tag (again, bookmarks)
 */
 
 Panels = new Mongo.Collection("panels");
@@ -83,9 +84,14 @@ if (Meteor.isClient) {
     return false;
   }
 
+  stripHTML = function(text){
+    return text.replace(/(<([^>]+)>)/ig,'');
+  }
+
   spanify = function(text){
 
-    //TODO: strip all existing tags
+    text = stripHTML(text);
+
     var words = text.split(' ');
     var spanifiedText = '';
 
@@ -94,7 +100,9 @@ if (Meteor.isClient) {
       spanifiedText += word + ' ';
     })
 
+    console.log('spanify called');
     return spanifiedText;
   }
+
 }
   ///////// END GLOBAL HELPERS ////////////////

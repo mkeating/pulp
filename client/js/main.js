@@ -11,7 +11,7 @@
 
       var newStoryID = Panels.insert({
         title: title,
-        text: text,
+        text: spanify(text),
         tags: tags,
         parentPanel: null,
         parentStory: null,

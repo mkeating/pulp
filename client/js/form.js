@@ -16,11 +16,7 @@ Template.form.events({
   
   Template.form.helpers({
 
-
-    //these options turn on and off the 3 link modes
-      dots: function() {
-        return false;
-      },
+    //these options turn on and off the 2 link modes
 
       choices: function() {
         return true;
@@ -29,5 +25,13 @@ Template.form.events({
       words: function() {
         //this one might be a little harder to implement
         return true;
-      }
+      },
+
+      getStoryError: function() {
+        return Session.get('storyError');
+      },
+
+      getChoiceError: function() {
+        return Session.get('choiceError');
+      },
   });

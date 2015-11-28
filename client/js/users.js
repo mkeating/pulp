@@ -8,6 +8,7 @@ Template.register.events({
     }
 
     //TODO: validate and feedback
+    var firstName = event.target.firstName.value;
     var email = trimInput(event.target.registerEmail.value);
     var password = event.target.registerPassword.value;
 
@@ -15,6 +16,7 @@ Template.register.events({
         email: email,
         password: password,
         profile: {
+            name: firstName,
             avatar: '/img/placeholder_avatar_300x300.png',
             bookmarks: [],
         },
