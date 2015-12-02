@@ -10,6 +10,7 @@
       test tags
     implement user DONE: bookmarks and DONE: avatars
     user profile page with go to bookmarks and change avatar (maybe)
+    add dates to bookmark creation?
 
     by-word branches
         DONE: allow html in meteor output (currently prints out tags as text)
@@ -65,6 +66,15 @@ Router.route('/story/:_id', function(){
       return {panelID: this.params._id};
     },
   });
+});
+
+Router.route('/profile/:_id', function(){
+
+  this.render('profile', 
+    {data: function(){
+      return {userId: this.params._id};
+    }})
+
 });
 
 //////END URL ROUTING /////////////////

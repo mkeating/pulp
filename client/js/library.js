@@ -16,5 +16,11 @@
       cleanTags = cleanTags.replace(/<\/span>/g, '');
       var truncatedText = cleanTags.substring(0, 500) + "...";
       return truncatedText;
+    },
+
+    getAuthor: function(id) {
+      console.log(Meteor.users.findOne({_id: id}));
+      return Meteor.users.findOne({_id: id});
     }
+
   })

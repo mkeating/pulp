@@ -1,0 +1,26 @@
+<template name="profile">
+	
+	<!--<h2>Title: {{title}}</h2>
+
+	current story: {{currentStoryID}}<br />
+	active panel: {{activePanel}}<br />
+
+	<div id="workspace">
+		{{#each storyLine }}
+			{{> panel id=_id}}
+			<br />
+		{{/each}}
+	</div>-->
+	<div id="workspace">
+	{{#with getProfile userId}}
+			{{profile.name}}
+			<img src={{profile.avatar}} class="img-circle img-responsive"/>
+			{{email}}
+
+			{{#each profile.bookmarks}}
+				{{this}}
+			{{/each}}
+	{{/with}}
+	</div>
+
+</template>

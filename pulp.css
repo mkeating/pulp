@@ -1,6 +1,14 @@
 /* CSS declarations go here */
+
+
+
 body{
 	background-color: black;
+	font-family: 'Poiret One', cursive;
+}
+
+.btn:hover{
+	background-color: gray;
 }
 
 .red {
@@ -8,7 +16,8 @@ body{
 }
 
 .middle {
-	background-color: white;
+	background-color: #666699;
+	border-radius: 10px;
 }
 
 span:hover {
@@ -53,9 +62,12 @@ span:hover {
 	cursor: pointer;
 }
 
-.middle{
-	background-color: white;
-	border: 1px solid gray;
+
+.title {
+	font-size: 5em;
+	text-align: center;
+	text-shadow: 2px 2px black;
+	color: white;
 }
 
 .panel{
@@ -71,6 +83,13 @@ span:hover {
 .panelHeader {
 	width: 100%;
 	float: right;
+}
+
+.panelText {
+	font-family: Corbel, "Lucida Grande", Verdana, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.5625;
 }
 
 
@@ -112,8 +131,14 @@ span:hover {
 	display: none;
 }
 
+.new-panel {
+	
+}
+
 .new-panel .storyInput {
 	height: 150px;
+	border: 1px solid #666699;
+	margin-bottom: 14px;
 }
 
 .new-panel .choiceNameInputBar {
@@ -124,8 +149,11 @@ span:hover {
 	width: 100%;
 	height: 45px;
 	color: white;
-	background-color: blue;
-	border: none;
+	background-color: white;
+	border-top: 1px solid #666699;
+	border-bottom: 1px solid #666699;
+	border-left: 1px solid #666699;
+	border-right: none;
 	padding: 5px;
 }
 
@@ -136,11 +164,14 @@ span:hover {
 .new-panel .addChoiceButton {
 	float:right;
 	top: 0;
-	color: white;
+	color: #666699;
 	height: 45px;
-	background-color: blue;
+	background-color: white;
 	margin:none;
-	border: none;
+	border-top: 1px solid #666699;
+	border-bottom: 1px solid #666699;
+	border-right: 1px solid #666699;
+	border-left: none;
 	font-size: 45px;
 	cursor: pointer;
 }
@@ -175,7 +206,7 @@ span:hover {
 	z-index: 1;
 }
 
-
+/*  THIS CLASSNAME BREAKS MODALS
 .fade{
 	position: absolute;
 	bottom: 0;
@@ -183,7 +214,7 @@ span:hover {
 	width: 100%;
 	background-color: white;
 	z-index: 2;
-}
+}*/
 
 .libraryLink {
 	text-decoration: none;
@@ -200,7 +231,8 @@ span:hover {
 }
 
 .error{
-	font-size: .7em;
+	min-height: 14px;
+	font-size: 14px;
 	color: red;
 }
 
@@ -208,8 +240,4 @@ span:hover {
 	border: none;
 	background-color: black;
 	color: white;
-}
-
-.middle{
-	background-color: #bf8040;
 }

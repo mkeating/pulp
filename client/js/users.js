@@ -73,8 +73,10 @@ Template.login.events({
       });
     console.log('login submit');
     return false;  
-  }
+  },
+
 });
+
 
 Template.login.helpers({
   getErrors: function(){

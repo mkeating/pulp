@@ -1,12 +1,12 @@
 <template name="form">
 
 	{{#if choices }}
-		Continue the story:
+		<h2>Continue the story:</h2>
 		<form class="new-panel">
 				<div class="error">{{getChoiceError}}</div>
 				<div class="addChoiceButton glyphicon glyphicon-plus"></div>
 				<div class="choiceNameInputBar">
-					<input type="text" class="choiceNameInput" name="choiceName" placeholder="Type your choice name here (eg 'Enter the cave')" >
+					<input type="text" class="choiceNameInput" name="choiceName" placeholder="Type your choice name here (eg 'Enter the cave')" autofocus>
 				</div>
 				
 				

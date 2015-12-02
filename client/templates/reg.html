@@ -1,16 +1,18 @@
 <template name="login">
 	<form id="login">
 		<div class="error">{{getErrors}}</div>
-		<input type="email" name="loginEmail" placeholder="Email...">
+		<input type="email" name="loginEmail" placeholder="Email..." autofocus>
 		<input type="password" name="loginPassword" placeholder="Password...">
 		<input type="submit" class="btn btn-default" value="Login">
+		OR 
+		{{> loginButtons}}
 	</form>
 </template>
 
 <template name="register">
 	<form id="signUp">
 		<div class="error">{{getErrors}}</div>
-		<input type="text" name="firstName" placeholder="Your name...">
+		<input type="text" name="firstName" placeholder="Your name..." autofocus>
 		<input type="email" name="registerEmail" placeholder="Enter your email...">
 		<input type="password" name="registerPassword" placeholder="Enter your password...">
 		<input type="submit" class="btn btn-default" value="Register">

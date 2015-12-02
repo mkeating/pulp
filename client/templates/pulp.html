@@ -1,5 +1,6 @@
 <head>
   <title>Pulp</title>
+  <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
 </head>
 
 <body >
@@ -30,8 +31,8 @@
 			</div>
 		{{else}}
 			<!-- bootstrap layout specific for no logged in users -->
-			<div class="col-lg-4 col-md-4 col-sm-3"></div>
-			<div class="col-lg-4 col-md-4 col-sm-6">
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-3"></div>
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
 				<div class="registerBox">	
 				<h1>PULP</h1>	
 					<h2>Sign up!</h2>	
@@ -39,7 +40,9 @@
 
 					<div class="loginBox">
 						Or
-						<h2><a data-toggle="modal" data-target="#loginModal">Login...</a></h2>
+						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#loginModal">
+  							Login
+						</button>
 					</div>
 				</div>
 				
@@ -62,7 +65,7 @@
 				<!-- end login modal -->
 
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-3"></div>
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-3"></div>
 		{{/if}}
 	</div>
 </template>

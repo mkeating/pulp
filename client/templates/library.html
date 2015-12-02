@@ -1,7 +1,10 @@
 <template name="library">
 
-	<h1> Library</h1>
+	<div class="title"> Library</div>
 
+	<div class="searchBar">
+		<input type="text" name="searchTerms" placeholder="Search...">
+	</div>	
 	{{#each stories}}
 		{{> libraryStory }}
 	{{/each}}

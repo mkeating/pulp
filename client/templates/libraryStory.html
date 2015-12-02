@@ -3,11 +3,14 @@
 
 		<div class="libraryCard col-lg-3 col-md-3 col-sm-4 col-xs-6">
 			<div class="libraryHeader"> <h2>{{title}}</h2>
-				Created by: {{createdBy}}
+				
+				{{#with getAuthor createdBy}}
+					Created by: {{this.profile.name}}
+				{{/with}}
 			</div>
 			<div class="tags">
 				{{#each tags}}
-					<div class="tag"> {{tag}} </div>
+					<div class="tag"> {{this}} </div>
 				{{/each}}
 			</div>
 			<div class="textPreview">

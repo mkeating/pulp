@@ -5,9 +5,9 @@
 
       var title = event.target.title.value;
       var text = event.target.text.value;
-      var tags = event.target.tags.value.split(' ');
+      var tags = event.target.tags.value.split(';');
 
-      //TODO: add spanify 
+      console.log(tags);
 
       var newStoryID = Panels.insert({
         title: title,
