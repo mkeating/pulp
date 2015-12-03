@@ -1,6 +1,6 @@
 /* CSS declarations go here */
 
-
+/* Global */
 
 body{
 	background-color: black;
@@ -20,9 +20,19 @@ body{
 	border-radius: 10px;
 }
 
-span:hover {
-	color:green;
+.error{
+	min-height: 14px;
+	font-size: 14px;
+	color: red;
 }
+
+.navbar {
+	border: none;
+	background-color: black;
+	color: white;
+}
+
+/*  Auth and Reg */
 
 .registerBox{
 	background-color: black;
@@ -35,6 +45,10 @@ span:hover {
 .loginBox {
 	margin: 10px;
 	text-align: center;
+}
+
+.modal-header {
+	border-bottom: none;
 }
 
 #signUp input{
@@ -62,6 +76,7 @@ span:hover {
 	cursor: pointer;
 }
 
+/* Panel and Story */
 
 .title {
 	font-size: 5em;
@@ -90,8 +105,12 @@ span:hover {
     font-size: 16px;
     font-weight: 300;
     line-height: 1.5625;
+    color: #4d2600;
 }
 
+span:hover {
+	color:green;
+}
 
 .debug{
 	color:gray;
@@ -100,28 +119,20 @@ span:hover {
 
 .choice{
 	width:100%;
-	background-color: #6666FF;
+	background-color: #996666;
 	border:1px solid white;
 	padding: 5px;
-}
-
-.choice a{
 	color: white;
 	text-decoration: none;
 	font-size: 2em;
 	cursor: pointer;
 }
 
-.new-story * {
-	margin: 5px;
-}
-
-
 .new-panel input{
 	width: 100%;
 }
 
-.avatar{
+.panelAvatar{
 	height: 35px;
 	width: 35px;
 	float: right;
@@ -131,12 +142,10 @@ span:hover {
 	display: none;
 }
 
-.new-panel {
-	
-}
 
 .new-panel .storyInput {
 	height: 150px;
+	width: 100%;
 	border: 1px solid #666699;
 	margin-bottom: 14px;
 }
@@ -177,23 +186,39 @@ span:hover {
 }
 
 .bookmarkButton {
-	color: blue;
+	color: #666699;
 	font-size: 35px;
 	float:right;
+	cursor: pointer;
+}
+
+.glyphicon-ok {
+	color: green;
+}
+
+.new-story {
+	padding-bottom: 20px;
+}
+
+.new-story * {
+	margin-top: 5px;
+	margin-left: 10%;
+	margin-right: 10%;
 }
 
 .new-story input{
-	width: 100%;
+	width: 80%;
+	font-size: 2em;
 }
 
 .new-story .storyInput {
 	height: 150px;
+	width: 80%;
+	vertical-align: top;
 }
 
-.new-story .hiddenInputs {
-	width: 100%;
 
-} 
+/* Library */
 
 .libraryCard{
 	border: 1px solid black;
@@ -204,6 +229,17 @@ span:hover {
 	overflow: hidden;
 	position: relative;
 	z-index: 1;
+}
+
+.tag {
+	background-color: gray;
+	color:white;
+	border-radius: 8px;
+	text-align: center;
+	display: inline;
+	padding: 2px;
+	margin: 2px;
+
 }
 
 /*  THIS CLASSNAME BREAKS MODALS
@@ -230,14 +266,3 @@ span:hover {
 	font-size: .7em;
 }
 
-.error{
-	min-height: 14px;
-	font-size: 14px;
-	color: red;
-}
-
-.navbar {
-	border: none;
-	background-color: black;
-	color: white;
-}

@@ -15,7 +15,7 @@
 			<div class="bookmarkButton {{glyphClass}}"></div>
 			{{/with}}
 			{{#with getAvatar createdBy}}
-				<img src={{profile.avatar}} class="img-circle img-responsive avatar"/>
+				<img src={{profile.avatar}} class="img-circle img-responsive panelAvatar"/>
 			{{/with}}
 		</div>
 
@@ -31,9 +31,10 @@
 			{{#if activePanel ../id }}
 				{{#each children}}		
 					{{#with getChild this}}
-						<div class="choice">
-							<a class="storyLink" id={{_id}} > {{choiceName}}  </a>
-						</div>
+						<div class="storyLink choice" id={{_id}}>
+							{{choiceName}}
+							<!--<a class="storyLink" id={{_id}} > {{choiceName}}  </a>-->
+						</div> 
 					{{/with}}
 				{{/each}}
 

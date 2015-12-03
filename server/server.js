@@ -164,6 +164,18 @@
         origin: true,
         terminal: false,
       });
+
+      /////User seed //////
+
+      Accounts.createUser({
+        email: "mkeating2225@gmail.com",
+        password: "dragon",
+        profile: {
+            name: "Mike",
+            avatar: "/img/placeholder_avatar_300x300.png",
+            bookmarks: [],
+        }, 
+      });
     }
     
   });
