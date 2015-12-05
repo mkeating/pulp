@@ -1,5 +1,6 @@
 
   Template.panel.events({
+
     'submit .new-panel-choice': function(event){
       console.log("event is: " + event.type);
       event.preventDefault();
@@ -100,8 +101,9 @@
         $(event.currentTarget).attr({'id': placeholderID, 'lockedBy': Meteor.userId()});
 
         $('.impression').show();
-        $('.choiceNameInputBar').hide();
-        $('.addChoiceButton').hide();
+        /*$('.choiceNameInputBar').hide();
+        $('.addChoiceButton').hide();*/
+        $('.new-panel-choice').hide();
         var panelId = event.currentTarget.parentElement.parentElement.id;
         var newText = event.currentTarget.parentElement.innerHTML;
         //console.log(panelId);
@@ -128,8 +130,6 @@
         Session.set('storyError', "This can't be empty");
         return false;
       }
-
-
 
       //TODO: add validation and feedback
 
@@ -164,12 +164,26 @@
 
 
       Session.set('activePanel', thisID);
+      Session.set('pendingImpressionWord', null);
 
       var addedPanel = UI.renderWithData(Template.panel, {id: thisID}, $('#workspace').get(0));
       scrollToActive();
 
       event.target.text.value = '';
       return false;
+  },
+
+  'click #cancelBtn': function(event){
+
+    //resets the pending word and frees it up
+
+    console.log(Session.get('pendingImpressionWord'));
+
+    $('#' + Session.get('pendingImpressionWord')).removeAttr('id').removeAttr('class').removeAttr('lockedBy');
+    $('.new-panel-impression').hide();
+    $('.choiceNameInputBar').show();
+    $('.addChoiceButton').show();
+
   },
 
     'click .bookmarkButton': function(event){

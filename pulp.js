@@ -15,9 +15,10 @@
     by-word branches
         DONE: allow html in meteor output (currently prints out tags as text)
         DONE: add class on click
-        permanent add id on panel submit
-        ways to back out (click outside, a Cancel button)
-        lock that word for other users
+        DONE:permanent add id on panel submit
+        DONE: ways to back out (click outside, a Cancel button)
+        DONE: lock that word for other users
+        clean up on unload
 
     first sign in demo/tutorial? 
 
@@ -115,6 +116,14 @@ if (Meteor.isClient) {
     console.log('spanify called');
     return spanifiedText;
   }
+
+  clearErrors = function(){
+    Session.set('storyError', null);
+    Session.set('choiceError', null);
+    Session.set('errorMessage', null);
+  }
+  //TODO: clean up on unload
+  //      a clear all errors global helper
 
 }
   ///////// END GLOBAL HELPERS ////////////////
