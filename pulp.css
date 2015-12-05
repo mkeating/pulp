@@ -110,6 +110,16 @@ body{
 
 span:hover {
 	color:green;
+	cursor: pointer;
+}
+
+span.locked {
+	color: red;
+	cursor: auto;
+}
+
+span.storyLink {
+	color: blue;
 }
 
 .debug{
@@ -128,7 +138,11 @@ span:hover {
 	cursor: pointer;
 }
 
-.new-panel input{
+.new-panel-choice input{
+	width: 100%;
+}
+
+.new-panel-impression input{
 	width: 100%;
 }
 
@@ -142,19 +156,30 @@ span:hover {
 	display: none;
 }
 
+.impression{
+	display: none;
+}
 
-.new-panel .storyInput {
+
+.new-panel-choice .storyInput {
 	height: 150px;
 	width: 100%;
 	border: 1px solid #666699;
 	margin-bottom: 14px;
 }
 
-.new-panel .choiceNameInputBar {
+.new-panel-impression .storyInput {
+	height: 150px;
+	width: 100%;
+	border: 1px solid #666699;
+	margin-bottom: 14px;
+}
+
+.new-panel-choice .choiceNameInputBar {
 	overflow: hidden;
 }
 
-.new-panel .choiceNameInput {
+.new-panel-choice .choiceNameInput {
 	width: 100%;
 	height: 45px;
 	color: white;
@@ -166,11 +191,11 @@ span:hover {
 	padding: 5px;
 }
 
-.new-panel .choiceNameInput:focus{
+.new-panel-choice .choiceNameInput:focus{
 	outline: none;
 }
 
-.new-panel .addChoiceButton {
+.new-panel-choice .addChoiceButton {
 	float:right;
 	top: 0;
 	color: #666699;

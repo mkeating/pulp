@@ -1,48 +1,54 @@
 <template name= "panel">
 	<div class="panel" id={{id}}>
 		
-		<!--{{#if activePanel id }}
-			<span style="color:red;">THIS IS THE ACTIVE PANEL</span> <br />
-		{{/if}}-->
+		{{#if activePanel id }}
+			
+			{{#with getPanel id}}
+			
+			<div class="panelHeader">
 
+				{{#with isBookmarked ../id}}
+				<div class="bookmarkButton {{glyphClass}}"></div>
+				{{/with}}
+				{{#with getAvatar createdBy}}
+					<img src={{profile.avatar}} class="img-circle img-responsive panelAvatar"/>
+				{{/with}}
+			</div>
 
+				<div class="panelText"> {{{text}}} </div>
 
-		{{#with getPanel id}}
-		
-		<div class="panelHeader">
+				<!--<div class="debug">
+					parent panel : {{parentPanel}} <br />
+					parent story : {{parentStory}} <br />
+					this panels id: {{_id}}  <br />
+					created by: {{createdBy}} <br />
+				</div>-->
 
-			{{#with isBookmarked ../id}}
-			<div class="bookmarkButton {{glyphClass}}"></div>
+				{{#if activePanel ../id }}
+					{{#each children}}		
+						{{#with getChild this}}
+							<div class="storyLink choice" id={{_id}}>
+								{{choiceName}}
+								<!--<a class="storyLink" id={{_id}} > {{choiceName}}  </a>-->
+							</div> 
+						{{/with}}
+					{{/each}}
+
+					{{> form  }}
+				{{/if}}
+
+			{{else}}
+				there is no panel
 			{{/with}}
-			{{#with getAvatar createdBy}}
-				<img src={{profile.avatar}} class="img-circle img-responsive panelAvatar"/>
-			{{/with}}
-		</div>
-
-			<div class="panelText"> {{{text}}} </div>
-
-			<!--<div class="debug">
-				parent panel : {{parentPanel}} <br />
-				parent story : {{parentStory}} <br />
-				this panels id: {{_id}}  <br />
-				created by: {{createdBy}} <br />
-			</div>-->
-
-			{{#if activePanel ../id }}
-				{{#each children}}		
-					{{#with getChild this}}
-						<div class="storyLink choice" id={{_id}}>
-							{{choiceName}}
-							<!--<a class="storyLink" id={{_id}} > {{choiceName}}  </a>-->
-						</div> 
-					{{/with}}
-				{{/each}}
-
-				{{> form  }}
-			{{/if}}
-
 		{{else}}
-			there is no panel
-		{{/with}}
+			<div class="panelText"> 
+				{{#with getPanel id}}
+					{{#with getPlainText text }}
+						{{this}}
+					{{/with}}
+				{{/with}}
+			</div>
+
+		{{/if}}
 	</div>
 </template>

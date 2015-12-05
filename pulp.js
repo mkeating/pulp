@@ -35,6 +35,8 @@
     NOTES/BLOG ideas:
       you cant send a string (class declaration, etc) from a helper to a template, but you can send an object! see isBookmarked
       including both data returned from a helper and text as an attribute in a tag (again, bookmarks)
+
+      by-word choice: the collection as single truth, and how to use that as a real time interface (lock etc)
 */
 
 Panels = new Mongo.Collection("panels");
