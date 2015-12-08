@@ -1,4 +1,16 @@
 
+  Template.library.events({
+    'submit .search': function(event){
+      
+
+
+      var searchTerms = event.target.searchTerms.value;
+      console.log(searchTerms);
+      event.preventDefault();
+    }
+
+  });
+
   Template.library.helpers({
 
     stories: function() {
@@ -8,7 +20,7 @@
 
   Template.libraryStory.helpers({
 
-    truncatedText: function(text) {
+    /*truncatedText: function(text) {
       
       //TODO: use regex to clear all tags
       var cleanTags = text.replace(/<span>/g, '');
@@ -16,6 +28,10 @@
       cleanTags = cleanTags.replace(/<\/span>/g, '');
       var truncatedText = cleanTags.substring(0, 500) + "...";
       return truncatedText;
+    },*/
+
+    textPreview: function(text) {
+      return stripHTML(text);
     },
 
     getAuthor: function(id) {

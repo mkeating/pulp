@@ -12,15 +12,40 @@
 		{{/each}}
 	</div>-->
 	<div id="workspace">
-	{{#with getProfile userId}}
-			{{profile.name}}
-			<img src={{profile.avatar}} class="img-circle img-responsive"/>
-			{{email}}
+		<div class="container-fluid">
+		{{#with getProfile userId}}
 
-			{{#each profile.bookmarks}}
-				{{this}}
-			{{/each}}
-	{{/with}}
+			<div class="col-lg-2 col-md-3 col-sm-3 col-xs-10 profileSidebar"> 
+				
+				<img src={{profile.avatar}} class="img-circle img-responsive"/>
+				<h1 class="profileUsername">
+					{{#if myProfile ../userId}} Hi {{/if}}
+					{{profile.name}}
+					{{#if myProfile ../userId}}!{{/if}}
+				</h1>
+			</div>
+		
+			<div class="col-lg-10 col-md-9 col-sm-7 col-xs-10">
+
+				{{#if myProfile ../userId}}
+				<h2 class="bookmarksHeader">Your Bookmarks</h2>
+				{{#each profile.bookmarks}}
+					
+					{{#with getBookmarks this}}
+						{{parentStory}}
+					{{/with}}
+				{{/each}}
+				{{else}}
+				<h2 class="bookmarksHeader">Stories {{profile.name}} has contributed to:</h2>
+
+
+				{{/if}}
+
+
+			</div>
+		{{/with}}
+	</div>
+
 	</div>
 
 </template>

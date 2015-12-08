@@ -14,9 +14,11 @@
 				{{/each}}
 			</div>
 			<div class="textPreview">
-				{{{text}}}
+				{{#with textPreview text}}
+					{{this}}
+				{{/with}}
 			</div>	
-		<div class="fade"></div>
+		<div class="faderBottom"></div>
 		</div>
 		
 	</a>

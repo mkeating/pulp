@@ -11,7 +11,7 @@
 				<div class="bookmarkButton {{glyphClass}}"></div>
 				{{/with}}
 				{{#with getAvatar createdBy}}
-					<img src={{profile.avatar}} class="img-circle img-responsive panelAvatar"/>
+					<a href="/profile/{{this._id}}"><img src={{profile.avatar}} class="img-circle img-responsive panelAvatar"/></a>
 				{{/with}}
 			</div>
 
