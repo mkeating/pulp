@@ -5,25 +5,13 @@
 body{
 	background-color: black;
 	font-family: 'Poiret One', cursive;
+	font-weight: bold;
 }
 
 @keyframes animatedBackgroundRightBottom {
 	0%{
 
-	 background-position: 100% 100%; background-size: 20%;
-	}
-	30%{
-		 background-position: 40% 40%; background-size: 70%;
-	}
-	100%{
-		background-position: 50% 50%; background-size: 100%;
-	}	
-}
-
-@keyframes animatedBackgroundRightTop {
-	0%{
-
-	 background-position: 100% 0%; background-size: 20%;
+	 background-position: 100% 100%; background-size: 20%; opacity: 0;
 	}
 	30%{
 		 background-position: 40% 40%; background-size: 70%; opacity: .5;
@@ -33,6 +21,45 @@ body{
 	}	
 }
 
+@keyframes animatedBackgroundRightTop {
+	0%{
+
+	 background-position: 100% 0%; background-size: 20%; opacity: 0;
+	}
+	30%{
+		 background-position: 40% 40%; background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; opacity: 0;
+	}	
+}
+
+@keyframes animatedBackgroundLeftBottom {
+	0%{
+
+	 background-position: 0% 100%; background-size: 20%; opacity: 0;
+	}
+	30%{
+		 background-position: 40% 40%; background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; opacity: 0;
+	}	
+}
+
+@keyframes animatedBackgroundLeftTop {
+	0%{
+
+	 background-position: 0% 0%; background-size: 20%; opacity: 0;
+	}
+	30%{
+		 background-position: 40% 40%; background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; opacity: 0;
+	}	
+}
+/*
 .animatedBackground {
 	position: absolute;
 	top:0;
@@ -40,13 +67,13 @@ body{
 	width: 100%;
 	height: 100%;
 	z-index: -50;
-	background-image: url(img/pulpcovers/f1eaafca06d032883301ede1a01d7aa2.jpg);
+	background-image: url(img/pulpcovers/FEATURE_BOOK_pg.3.png);
 	background-repeat: no-repeat;
 	background-size: 20%;
 	opacity: .9;
 
 	animation: animatedBackgroundRightTop 7s linear infinite;
-}
+}*/
 
 .btn:hover{
 	background-color: gray;

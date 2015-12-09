@@ -9,7 +9,7 @@
     DONE: implement tags
       test tags
     implement user DONE: bookmarks and DONE: avatars
-    user profile page with go to bookmarks and change avatar (maybe)
+    user profile page with DONE: go to bookmarks and change avatar (maybe)
     add dates to bookmark creation?
 
     by-word branches
@@ -22,8 +22,13 @@
 
     first sign in demo/tutorial? 
 
+    IS STORYLINE CREATOR BROKEN!!!??
+      this is happening in template.story.rendered
+      FIXED phew
+    add a get a link to this storyline button
+
     library search/filter
-    library wider container than workspace?
+    DONE: library wider container than workspace?
     DONE: library card: truncated text of first panel, other options (created by, scoring, etc)
 
     big collection seed
@@ -64,7 +69,10 @@ Router.route('/story/:_id', function(){
   Session.set('currentStoryID', targetPanel.parentStory);
   Session.set('title', parentStory.title);
 
+  var activePanel = this.params._id;
+  Session.set('activePanel', activePanel);
   this.render('story', {
+    
     data: function() {
       return {panelID: this.params._id};
     },

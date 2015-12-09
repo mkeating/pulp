@@ -32,7 +32,12 @@
 				{{#each profile.bookmarks}}
 					
 					{{#with getBookmarks this}}
-						{{parentStory}}
+						<a href="../story/{{this._id}}">
+						{{#with getParentTitle this.parentStory}}
+							{{title}} 
+						{{/with}}
+						</a><br />
+						
 					{{/with}}
 				{{/each}}
 				{{else}}

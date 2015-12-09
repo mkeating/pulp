@@ -40,7 +40,8 @@ Template.story.helpers({
 
       this._rendered = true;
 
-      Session.set('activePanel', Session.get('currentStoryID'));
+      //Session.set('activePanel', Session.get('currentStoryID'));
+      
       scrollToActive();      
       }
   }

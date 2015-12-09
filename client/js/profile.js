@@ -9,9 +9,10 @@
     },
 
     getBookmarks: function(id){
-    	console.log(id);
-    	var thisBM = Panels.findOne({_id: id});
-    	console.log(thisBM);
+    	return Panels.findOne({_id: id});
+    },
+
+    getParentTitle: function(id){
     	return Panels.findOne({_id: id});
     },
 
