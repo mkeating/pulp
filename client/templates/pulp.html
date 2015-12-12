@@ -1,6 +1,9 @@
 <head>
   <title>Pulp</title>
   <link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 </head>
 
 <body >
@@ -32,11 +35,12 @@
 		{{else}}
 			<!-- bootstrap layout specific for no logged in users -->
 			<div class="animatedBackground"></div>
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-3"></div>
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-2"></div>
+			<div class="col-lg-4 col-md-4 col-sm-6 col-xs-8">
 				<div class="registerBox">	
-				<h1>PULP</h1>	
-					<h2>Sign up!</h2>	
+				<h1>PULP!</h1>
+				<h3>Tell stories together</h3>	
+					<h2>Sign up</h2>	
 					{{> register}}
 
 					<div class="loginBox">
@@ -55,7 +59,7 @@
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<h4 class="modal-title" id="loginModalLabel">Login</h4>
+								<h2 class="modal-title" id="loginModalLabel">Login</h2>
 								<div class="modal-body">
 									{{> login}}
 								</div>
@@ -66,7 +70,7 @@
 				<!-- end login modal -->
 
 			</div>
-			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-3"></div>
+			<div class="col-lg-4 col-md-4 col-sm-3 col-xs-2"></div>
 		{{/if}}
 	</div>
 </template>

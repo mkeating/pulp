@@ -101,6 +101,9 @@
         $(event.currentTarget).attr({'id': placeholderID, 'lockedBy': Meteor.userId()});
 
         $('.impression').show();
+        $('html, body').animate({
+          scrollTop: $('.impression').offset().top
+        }, 2000);
         /*$('.choiceNameInputBar').hide();
         $('.addChoiceButton').hide();*/
         $('.new-panel-choice').hide();
@@ -181,8 +184,10 @@
 
     $('#' + Session.get('pendingImpressionWord')).removeAttr('id').removeAttr('class').removeAttr('lockedBy');
     $('.new-panel-impression').hide();
-    $('.choiceNameInputBar').show();
-    $('.addChoiceButton').show();
+    $('.new-panel-choice').show();
+    scrollToActive();
+    /*$('.choiceNameInputBar').show();
+    $('.addChoiceButton').show();*/
 
   },
 
@@ -202,6 +207,15 @@
       }
 
       console.log(Meteor.user().profile.bookmarks);
+
+    },
+
+    'click .linkButton': function(event){
+
+      var toLink = event.target.parentElement.parentElement.id;
+      //$('hi').appendTo('.linkArea');
+      $('.linkArea').text('pulp.mkeat.net/story/' + toLink);
+      console.log($('.linkArea').html());
 
     }
 
@@ -249,3 +263,6 @@ Template.panel.helpers({
 
       
   });
+
+
+

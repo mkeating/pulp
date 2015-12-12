@@ -4,14 +4,20 @@
 
 	<div class="searchBar">
 		<form class="search">
-		<input type="text" name="searchTerms" placeholder="Search by tags...">
+		<input type="text" name="searchTerms" placeholder="Search by genre...">
 		<input type="submit" style="display:none" class="btn btn-default" value="Submit">
 	</form>
 	</div>	
 	<div class="container-fluid">
-	{{#each stories}}
-		{{> libraryStory }}
-	{{/each}}
+		{{#if searching}}
+			{{#each searchResults}}
+				{{> libraryStory this}}
+			{{/each}}
+		{{else}}
+			{{#each stories}}
+				{{> libraryStory }}
+			{{/each}}
+		{{/if}}
 </div>
 
 </template>

@@ -8,7 +8,7 @@ Template.ApplicationLayout.rendered = function() {
 					'Mystery_January_1934.jpg',
 					'paperback4.jpg',
 					'pulp-masked-rider-1950-1500.jpg',
-					'tumblr_inline_nrpljlWity1re5fde_500.jpg'];
+					'1924-pulp-cover-rm-farley-1950-us-public-domain-publication-datecopyright-not-renewedcommons-wikimedia-org.jpg'];
 
 	var directions = ['animatedBackgroundRightBottom',
 						'animatedBackgroundRightTop',
@@ -18,7 +18,8 @@ Template.ApplicationLayout.rendered = function() {
 	function animate(i){
 		
 		setInterval(function(){
-			var counter = Math.floor((Math.random() * covers.length)+ 0);
+			//var counter = Math.floor((Math.random() * covers.length)+ 0);
+			var counter = i;
 			var direction = Math.floor((Math.random() * directions.length)+ 0);
 
 				$('.animatedBackground').css(

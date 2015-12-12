@@ -5,7 +5,7 @@
     if(Panels.find().count() == 0){
       console.log("collection empty; seeding...");
 
-      Panels.insert(
+      /*Panels.insert(
       {
         _id: "bespokeID1",
         title: "The Origin",
@@ -83,7 +83,7 @@
         createdBy: "mike", 
         origin: false,
         terminal: false,
-      });
+      });*/
 
       ////// Second Story //////////
       Panels.insert(
@@ -95,8 +95,9 @@
         parentPanel: null,
         parentStory: "bespokeID7",
         children: [],
+        tags: ['western', 'revenge'],
         createdAt: null,
-        createdBy: "mike", 
+        createdBy: "placeholderUser1", 
         origin: true,
         terminal: false,
       });
@@ -111,8 +112,9 @@
         parentPanel: null,
         parentStory: "bespokeID8",
         children: [],
+        tags: ['detective', 'noir'],
         createdAt: null,
-        createdBy: "mike", 
+        createdBy: "placeholderUser1", 
         origin: true,
         terminal: false,
       });
@@ -127,8 +129,9 @@
         parentPanel: null,
         parentStory: "bespokeID9",
         children: [],
+        tags: ['sci-fi'],
         createdAt: null,
-        createdBy: "mike", 
+        createdBy: "placeholderUser4", 
         origin: true,
         terminal: false,
       });
@@ -143,8 +146,9 @@
         parentPanel: null,
         parentStory: "bespokeID10",
         children: [],
+        tags: ['superhero'],
         createdAt: null,
-        createdBy: "mike", 
+        createdBy: "placeholderUser3", 
         origin: true,
         terminal: false,
       });
@@ -159,8 +163,9 @@
         parentPanel: null,
         parentStory: "bespokeID11",
         children: [],
+        tags: ['sci-fi', 'time travel'],
         createdAt: null,
-        createdBy: "mike", 
+        createdBy: "placeholderUser4", 
         origin: true,
         terminal: false,
       });
@@ -175,6 +180,42 @@
             avatar: "/img/placeholder_avatar_300x300.png",
             bookmarks: [],
         }, 
+      });
+
+      Meteor.users.insert({
+        _id: "placeholderUser1",
+        email: "fake@email.com",
+        profile: {
+          name: "Doyle",
+          avatar: "/img/placeholder_avatar_300x300.png",
+        }
+      });
+
+      Meteor.users.insert({
+        _id: "placeholderUser2",
+        email: "fake@email.com",
+        profile: {
+          name: "Lovecraft",
+          avatar: "/img/placeholder_avatar_300x300.png",
+        }
+      });
+
+      Meteor.users.insert({
+        _id: "placeholderUser3",
+        email: "fake@email.com",
+        profile: {
+          name: "Seigel",
+          avatar: "/img/placeholder_avatar_300x300.png",
+        }
+      });
+
+      Meteor.users.insert({
+        _id: "placeholderUser4",
+        email: "fake@email.com",
+        profile: {
+          name: "Asimov",
+          avatar: "/img/placeholder_avatar_300x300.png",
+        }
       });
     }
     

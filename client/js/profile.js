@@ -16,6 +16,14 @@
     	return Panels.findOne({_id: id});
     },
 
+    truncatedText: function(text) {
+      
+      text = stripHTML(text);
+      var truncatedText = text.substring(0, 140) + "...";
+      console.log('truncatedText: ' + truncatedText);
+      return truncatedText;
+    },
+
  	myProfile:function(id) {
     console.log(id);
     if (id == Meteor.userId()){

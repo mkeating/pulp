@@ -69,8 +69,8 @@ Router.route('/story/:_id', function(){
   Session.set('currentStoryID', targetPanel.parentStory);
   Session.set('title', parentStory.title);
 
-  var activePanel = this.params._id;
-  Session.set('activePanel', activePanel);
+  //var activePanel = this.params._id;
+  //Session.set('activePanel', activePanel);
   this.render('story', {
     
     data: function() {

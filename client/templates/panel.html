@@ -7,12 +7,17 @@
 			
 			<div class="panelHeader">
 
+
+
 				{{#with isBookmarked ../id}}
-				<div class="bookmarkButton {{glyphClass}}"></div>
+				<div class="bookmarkButton {{glyphClass}}" title="Bookmark this panel"></div>
 				{{/with}}
+				<div class="linkButton glyphicon glyphicon-link" data-toggle="modal" data-target="#linkModal" title="Share a link to this panel"></div>
 				{{#with getAvatar createdBy}}
-					<a href="/profile/{{this._id}}"><img src={{profile.avatar}} class="img-circle img-responsive panelAvatar"/></a>
+					<a href="/profile/{{this._id}}" title="Created by {{profile.name}}"><img src={{profile.avatar}} class="img-circle img-responsive panelAvatar"/></a>
 				{{/with}}
+
+
 			</div>
 
 				<div class="panelText"> {{{text}}} </div>
@@ -50,5 +55,20 @@
 			</div>
 
 		{{/if}}
+	</div>
+
+	<div class="modal fade" id="linkModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Share this storyline with the link below!</h4>
+				</div>
+				<div class="modal-body linkArea">
+					
+				</div>
+			</div>
+		</div>
 	</div>
 </template>

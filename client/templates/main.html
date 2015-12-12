@@ -1,12 +1,16 @@
 <template name="main">
 	{{#if currentUser}}
 	<div id="workspace">
-		<div class="title">Start something new...</div>
+		<div class="title">Start a new story...</div>
+		<div class="sentenceGen">
+			<h3 >Need help getting started?</h3>
+		<button class="btn btn-default sentenceGenButton"> Generate a first sentence</button>
+		</div>
 		<form class="new-story">
 		  	<input type="text" name="title" placeholder="The title of your story">
 		  	<!--<input type="textarea" name="text" class="storyInput" placeholder="Type your story here">-->
 		  	<textarea name="text" class="storyInput" placeholder="Type your story here"></textarea>
-		  	<input type="text" name="tags" class="tagsInput" placeholder="Enter tags (seperated by ';' "> 
+		  	<input type="text" name="tags" class="tagsInput" placeholder="Enter genre tags (separated by ';') "> 
 		  	<input type="submit" class="btn btn-default" value="Submit">
 		</form>
 
