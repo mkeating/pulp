@@ -1,6 +1,6 @@
 Template.ApplicationLayout.rendered = function() {
 
-	var covers = ['1bwic.jpg',
+	var covers = [	'1bwic.jpg',
 					'avon10.jpg',
 					'DetectiveBook_pulp_v5n10.jpg',
 					'Exciting_Comics_9.jpg',
@@ -10,7 +10,7 @@ Template.ApplicationLayout.rendered = function() {
 					'pulp-masked-rider-1950-1500.jpg',
 					'1924-pulp-cover-rm-farley-1950-us-public-domain-publication-datecopyright-not-renewedcommons-wikimedia-org.jpg'];
 
-	var directions = ['animatedBackgroundRightBottom',
+	var directions = [	'animatedBackgroundRightBottom',
 						'animatedBackgroundRightTop',
 						'animatedBackgroundLeftBottom',
 						'animatedBackgroundLeftTop'];
@@ -18,7 +18,7 @@ Template.ApplicationLayout.rendered = function() {
 	function animate(i){
 		
 		setInterval(function(){
-			//var counter = Math.floor((Math.random() * covers.length)+ 0);
+		
 			var counter = i;
 			var direction = Math.floor((Math.random() * directions.length)+ 0);
 

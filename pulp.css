@@ -123,6 +123,7 @@ h2{
 	text-align: center;
 	border: 1px solid white;
 	font-family: 'Poiret One', cursive;
+	min-width: 320px;
 }
 
 .loginBox {

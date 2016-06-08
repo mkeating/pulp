@@ -65,12 +65,10 @@ Router.route('/story/:_id', function(){
 
   var targetPanel = Panels.findOne({_id: this.params._id});
   var parentStory = Panels.findOne({_id: targetPanel.parentStory});
-  console.log('router called...');
+  
   Session.set('currentStoryID', targetPanel.parentStory);
   Session.set('title', parentStory.title);
 
-  //var activePanel = this.params._id;
-  //Session.set('activePanel', activePanel);
   this.render('story', {
     
     data: function() {
@@ -121,7 +119,6 @@ if (Meteor.isClient) {
       spanifiedText += word + ' ';
     })
 
-    console.log('spanify called');
     return spanifiedText;
   }
 

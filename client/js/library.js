@@ -38,7 +38,6 @@
           results.push(Panels.find({origin: true, tags: word}).fetch());
         });*/
 
-      console.log(results);
       return Panels.find({origin: true, tags: searchTerms}).fetch();
     }
   })

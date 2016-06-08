@@ -5,8 +5,6 @@
       console.log("event is: " + event.type);
       event.preventDefault();
 
-      //console.log(event.type);
-
       var text = event.target.text.value;
       var parentPanel = event.target.parent.value;
       var choiceName = event.target.choiceName.value;
@@ -20,8 +18,6 @@
         return false;
       }
 
-      //TODO: add validation and feedback
-
       var thisID = Panels.insert({
         text: spanify(text),
         choiceName: choiceName,
@@ -32,8 +28,8 @@
         parentStory: Session.get('currentStoryID'),
         children: [],
         parentPanel: parentPanel,
-      }, function(){
-          //TODO error handling
+      }, function(error){
+          console.log(error);
         }
       );
 
@@ -43,12 +39,11 @@
           {$push: {children: thisID}}
       );
 
-      //console.log('new panel setting active....');
+      
       Session.set('activePanel', thisID);
-      //console.log('panel create active panel: ' + Session.get('activePanel'));
 
       var addedPanel = UI.renderWithData(Template.panel, {id: thisID}, $('#workspace').get(0));
-      //console.log('scrolling to active...');
+    
       scrollToActive();
 
       event.target.text.value = '';
@@ -65,6 +60,7 @@
 
     'click span': function(event){
 
+      //TODO: adding a panel has been moved, this can be reformatted as a if(!) statement
 
       if(event.target.classList.contains('locked') || event.target.classList.contains('storyLink')){
 
@@ -85,17 +81,9 @@
        
       }else{
 
-        console.log('clicked an open word');
-        console.log(event.currentTarget.classList);
-
-        //console.log('just clicked: ' + event.currentTarget);
-
         var placeholderID = Random.id();
 
-        //console.log(placeholderID);
-
         Session.set('pendingImpressionWord', placeholderID);
-        //console.log(Session.get('pendingImpressionWord'));
 
         $(event.currentTarget).addClass('locked');
         $(event.currentTarget).attr({'id': placeholderID, 'lockedBy': Meteor.userId()});
@@ -104,12 +92,10 @@
         $('html, body').animate({
           scrollTop: $('.impression').offset().top
         }, 2000);
-        /*$('.choiceNameInputBar').hide();
-        $('.addChoiceButton').hide();*/
+        
         $('.new-panel-choice').hide();
         var panelId = event.currentTarget.parentElement.parentElement.id;
         var newText = event.currentTarget.parentElement.innerHTML;
-        //console.log(panelId);
 
         //update collection
         Panels.update (
@@ -121,10 +107,8 @@
     },
 
     'submit .new-panel-impression': function(event){
-      //console.log("event is: " + event.type);
+      
       event.preventDefault();
-
-      //console.log(event.type);
 
       var text = event.target.text.value;
       var parentPanel = event.target.parent.value;
@@ -133,8 +117,6 @@
         Session.set('storyError', "This can't be empty");
         return false;
       }
-
-      //TODO: add validation and feedback
 
       var thisID = Panels.insert({
         text: spanify(text),
@@ -145,11 +127,12 @@
         parentStory: Session.get('currentStoryID'),
         children: [],
         parentPanel: parentPanel,
-      }, function(){
-          //TODO error handling
+      }, function(error){
+          console.log(error);
         }
       );
 
+      //frees the word from the lock
       var pendingImpressionWord = Session.get('pendingImpressionWord');
       $('#' + pendingImpressionWord).attr({'id': thisID, 'class': 'storyLink'});
       $('#' + pendingImpressionWord).removeClass('locked lockedBy');
@@ -179,41 +162,33 @@
   'click #cancelBtn': function(event){
 
     //resets the pending word and frees it up
-
     console.log(Session.get('pendingImpressionWord'));
 
     $('#' + Session.get('pendingImpressionWord')).removeAttr('id').removeAttr('class').removeAttr('lockedBy');
     $('.new-panel-impression').hide();
     $('.new-panel-choice').show();
     scrollToActive();
-    /*$('.choiceNameInputBar').show();
-    $('.addChoiceButton').show();*/
+    
 
   },
 
     'click .bookmarkButton': function(event){
-      //TODO: prevent redundancies, prevent multiclicks, success feedback
       
       var toBeBookmarked = event.target.parentElement.parentElement.id;
 
-      if(Meteor.user().profile.bookmarks.indexOf(toBeBookmarked) == -1){
-        //console.log ('we can add this shit');
+      //if this is not already bookmarked
+      if(Meteor.user().profile.bookmarks.indexOf(toBeBookmarked) == -1){        
         Meteor.users.update(Meteor.userId(), {$push: {'profile.bookmarks': toBeBookmarked}});
-
       }
       else {
-       // console.log('this is already bookmarked');
         Meteor.users.update(Meteor.userId(), {$pull: {'profile.bookmarks': toBeBookmarked}});
       }
-
-      console.log(Meteor.user().profile.bookmarks);
 
     },
 
     'click .linkButton': function(event){
 
       var toLink = event.target.parentElement.parentElement.id;
-      //$('hi').appendTo('.linkArea');
       $('.linkArea').text('pulp.mkeat.net/story/' + toLink);
       console.log($('.linkArea').html());
 
@@ -224,7 +199,6 @@
 Template.panel.helpers({
       activePanel: function (id) {
         if(Session.get('activePanel') == id){
-          //console.log('found true');
           return true;
         }else{
           return false;
@@ -241,8 +215,6 @@ Template.panel.helpers({
       },
 
       getAvatar: function(id){
-        //console.log('getting avatar for: '+ id);
-       // console.log(Meteor.users.findOne(id).profile.avatar);
         return avatar = Meteor.users.findOne(id);
       },
 

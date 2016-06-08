@@ -3,11 +3,6 @@ Template.story.helpers({
         return Session.get('currentStoryID');
       },
 
-      /*activePanel: function () {
-        console.log('story helper active: ' + Session.get('activePanel'));
-        return Session.get('activePanel');
-      },*/
-
       title: function () {
         return Session.get('title');
       },
@@ -40,9 +35,7 @@ Template.story.helpers({
 
       this._rendered = true;
 
-      console.log(this.data.panelID);
-      Session.set('activePanel', this.data.panelID);
-      
+      Session.set('activePanel', this.data.panelID);      
       scrollToActive();      
       }
   }

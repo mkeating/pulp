@@ -7,7 +7,6 @@ Template.register.events({
       return text.replace(/^\s*|\s*$/g, "");
     }
 
-    //TODO: validate and feedback
     var firstName = event.target.firstName.value;
     var email = trimInput(event.target.registerEmail.value);
     var password = event.target.registerPassword.value;
@@ -24,14 +23,11 @@ Template.register.events({
 
     Accounts.createUser(options, function(error){
       if(error){
-        console.log(error.message);
         Session.set('errorMessage', error.message);
       }
       else{
-        console.log('registered');
         Session.set('errorMessage', null);
         Meteor.loginWithPassword(email, password);
-        // TODO: a redirect to /? got some go to story after register
       }
     });  
   }
@@ -51,9 +47,6 @@ Template.login.events({
     var email = event.target.loginEmail.value;
     var password = event.target.loginPassword.value;
     var errorMessage;
-    
-
-    //TODO: is this sending email and password to the url???
 
     Meteor.loginWithPassword(email, password, function(error)
       {

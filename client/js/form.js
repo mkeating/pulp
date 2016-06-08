@@ -9,7 +9,6 @@ Template.form.events({
 
     // What is this? 
     'submit .new-panel': function(event){
-      console.log('form helper preventing default');
       event.preventDefault;
     }
   });
@@ -23,7 +22,7 @@ Template.form.events({
       },
 
       words: function() {
-        //this one might be a little harder to implement
+        
         return true;
       },
 

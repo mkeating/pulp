@@ -20,8 +20,8 @@
         createdBy: Meteor.userId(),
         origin: true,
         terminal: false,
-      }, function(){
-          //TODO: error handling
+      }, function(error){
+          console.log(error);
       }
       );
 
