@@ -32,7 +32,7 @@ Template.ApplicationLayout.rendered = function() {
 						'z-index': '-50',
 						'background-image': 'url(img/pulpcovers/'+covers[counter]+')',
 						'background-repeat': 'no-repeat',
-						'-webkit-background-size': '20%',
+						'-webkit-background-size': '20%, contain',
 						'background-size': '20%',
 						'opacity': '.9',
 
@@ -66,7 +66,7 @@ Template.ApplicationLayout.rendered = function() {
 					'z-index': '-50',
 					'background-image': 'url(img/pulpcovers/FEATURE_BOOK_pg.3.png)',
 					'background-repeat': 'no-repeat',
-					'-webkit-background-size': '20%',
+					'-webkit-background-size': '20%, contain',
 					'background-size': '20%',
 					'opacity': '.9',
 
