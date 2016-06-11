@@ -4,7 +4,6 @@
 
 body{
 	background-color: black;
-	/*font-family: 'Poiret One', cursive;*/
 	font-family: Corbel, "Lucida Grande", Verdana, sans-serif;
 	font-weight: bold;
 }
@@ -19,55 +18,205 @@ h2{
 	font-family: 'Poiret One', cursive;
 }
 
-@keyframes animatedBackgroundRightBottom {
-	0%{
+/* from Right Bottom */
 
-	 background-position: 100% 100%; background-size: 20%; opacity: 0;
+
+@-webkit-keyframes animatedBackgroundRightBottom {
+	0%{
+	 	background-position: 100% 100%; background-size: 20%; -webkit-background-size: 20%;  opacity: 0;
 	}
 	30%{
-		 background-position: 40% 40%; background-size: 70%; opacity: .5;
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%;  opacity: .5;
 	}
 	100%{
-		background-position: 50% 50%; background-size: 100%; opacity: 0;
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%;  opacity: 0;
+	}	
+}
+
+@-moz-keyframes animatedBackgroundRightBottom {
+	0%{
+	 	background-position: 100% 100%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+@-o-keyframes animatedBackgroundRightBottom {
+	0%{
+	 	background-position: 100% 100%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+@keyframes animatedBackgroundRightBottom {
+	0%{
+	 	background-position: 100% 100%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+
+/* from Right Top */
+
+@-webkit-keyframes animatedBackgroundRightTop {
+	0%{	
+	 	background-position: 100% 0%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+@-moz-keyframes animatedBackgroundRightTop {
+	0%{	
+	 	background-position: 100% 0%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+@-o-keyframes animatedBackgroundRightTop {
+	0%{	
+	 	background-position: 100% 0%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
 	}	
 }
 
 @keyframes animatedBackgroundRightTop {
-	0%{
-
-	 background-position: 100% 0%; background-size: 20%; opacity: 0;
+	0%{	
+	 	background-position: 100% 0%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
 	}
 	30%{
-		 background-position: 40% 40%; background-size: 70%; opacity: .5;
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
 	}
 	100%{
-		background-position: 50% 50%; background-size: 100%; opacity: 0;
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+/* from Left Bottom */
+
+@-webkit-keyframes animatedBackgroundLeftBottom {
+	0%{
+		background-position: 0% 100%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+@-moz-keyframes animatedBackgroundLeftBottom {
+	0%{
+		background-position: 0% 100%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+@-o-keyframes animatedBackgroundLeftBottom {
+	0%{
+		background-position: 0% 100%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
 	}	
 }
 
 @keyframes animatedBackgroundLeftBottom {
 	0%{
-
-	 background-position: 0% 100%; background-size: 20%; opacity: 0;
+		background-position: 0% 100%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
 	}
 	30%{
-		 background-position: 40% 40%; background-size: 70%; opacity: .5;
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
 	}
 	100%{
-		background-position: 50% 50%; background-size: 100%; opacity: 0;
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+/* from Left Top */
+
+@-webkit-keyframes animatedBackgroundLeftTop {
+	0%{
+	 	background-position: 0% 0%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+@-moz-keyframes animatedBackgroundLeftTop {
+	0%{
+	 	background-position: 0% 0%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
+	}	
+}
+
+@-o-keyframes animatedBackgroundLeftTop {
+	0%{
+	 	background-position: 0% 0%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
+	}
+	30%{
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
+	}
+	100%{
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
 	}	
 }
 
 @keyframes animatedBackgroundLeftTop {
 	0%{
-
-	 background-position: 0% 0%; background-size: 20%; opacity: 0;
+	 	background-position: 0% 0%; background-size: 20%; -webkit-background-size: 20%; opacity: 0;
 	}
 	30%{
-		 background-position: 40% 40%; background-size: 70%; opacity: .5;
+		background-position: 40% 40%; background-size: 70%; -webkit-background-size: 70%; opacity: .5;
 	}
 	100%{
-		background-position: 50% 50%; background-size: 100%; opacity: 0;
+		background-position: 50% 50%; background-size: 100%; -webkit-background-size: 100%; opacity: 0;
 	}	
 }
 

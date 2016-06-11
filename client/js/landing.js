@@ -32,9 +32,13 @@ Template.ApplicationLayout.rendered = function() {
 						'z-index': '-50',
 						'background-image': 'url(img/pulpcovers/'+covers[counter]+')',
 						'background-repeat': 'no-repeat',
+						'-webkit-background-size': '20%',
 						'background-size': '20%',
 						'opacity': '.9',
 
+						'-webkit-animation': directions[direction] + ' 7s linear infinite',
+						'-moz-animation': directions[direction] + ' 7s linear infinite',
+						'-o-animation': directions[direction] + ' 7s linear infinite',
 						'animation': directions[direction] + ' 7s linear infinite'
 					}
 				);
@@ -51,6 +55,7 @@ Template.ApplicationLayout.rendered = function() {
 
 	$(document).ready(function(){
 
+		/* initial cover before the loop kicks in */
 		$('.animatedBackground').css(
 					{
 					'position': 'absolute',
@@ -61,10 +66,15 @@ Template.ApplicationLayout.rendered = function() {
 					'z-index': '-50',
 					'background-image': 'url(img/pulpcovers/FEATURE_BOOK_pg.3.png)',
 					'background-repeat': 'no-repeat',
+					'-webkit-background-size': '20%',
 					'background-size': '20%',
 					'opacity': '.9',
 
-					'animation': 'animatedBackgroundRightTop 7s linear 1'
+					'-webkit-animation': 'animatedBackgroundRightTop 7s linear 1',
+					'-moz-animation': 'animatedBackgroundRightTop 7s linear 1',
+					'-o-animation': 'animatedBackgroundRightTop 7s linear 1',
+					'animation': 'animatedBackgroundRightTop 7s linear 1',
+					
 				}
 			);
 		triggerAnim();
