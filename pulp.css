@@ -275,6 +275,23 @@ h2{
 	min-width: 320px;
 }
 
+
+@media screen and (max-width: 320px) {
+	.registerBox {
+		min-width: 260px;
+		margin-top: 30%;
+	}
+}
+/*
+@media screen and (max-width: 800px and min-width: 400px) {
+	.registerBox {
+		margin: 0 auto;
+		margin-top: 300px;
+		width: 320px;
+
+	}
+}*/
+
 .loginBox {
 	margin: 10px;
 	text-align: center;
@@ -325,6 +342,13 @@ h2{
 	color: white;
 }
 
+@media screen and (max-width: 320px) {
+
+	.title {
+		font-size: 2.4em;
+	}
+}
+
 
 .panel{
 		border-radius: 15px;
@@ -337,6 +361,13 @@ h2{
 		padding: 20px;
 }
 
+@media screen and (max-width: 320px) {
+	.panel {
+		min-width: 260px;
+		width: 260px;
+	}
+}
+
 .panelHeader {
 	width: 100%;
 	float: right;
@@ -344,12 +375,13 @@ h2{
 
 .panelText {
 	font-family: Corbel, "Lucida Grande", Verdana, sans-serif;
-    font-size: 16px;
+    font-size: 1em;
     font-weight: 300;
     line-height: 1.5625;
     color: #4d2600;
     white-space: pre-wrap;
 }
+
 
 
 .panelText span:hover {
@@ -384,6 +416,12 @@ h2{
 	text-decoration: none;
 	font-size: 2em;
 	cursor: pointer;
+}
+
+@media screen and (max-width: 320px) {
+	.choice {
+		font-size: 1.2em;
+	}
 }
 
 .new-panel-choice input{
@@ -502,6 +540,12 @@ h2{
 	font-size: 2em;
 }
 
+@media screen and (max-width: 400px){
+	.new-story input {
+		font-size: .8em;
+	}
+}
+
 .new-story .storyInput {
 	height: 150px;
 	width: 80%;
@@ -510,6 +554,29 @@ h2{
 
 
 /* Library */
+
+.searchBar {	
+	
+	margin-bottom: 10px;
+}
+
+.searchBar > form {
+	text-align: center;
+}
+
+.searchBar > form > input {
+	width: 200px;
+}
+
+
+
+@media screen and (max-width: 320px){
+	.searchBar > form > input {
+		width: 100%;
+	}
+
+}
+
 
 .libraryCard{
 	border: 1px solid black;
